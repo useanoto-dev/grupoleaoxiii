@@ -3,6 +3,7 @@
 import * as React from 'react'
 import Image from 'next/image'
 import { motion, useInView, AnimatePresence, useMotionValue, useSpring } from 'framer-motion'
+// GalleryBg uses CSS-only blobs for background animations
 import { ZoomIn, X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useSafeReducedMotion } from '@/lib/useSafeReducedMotion'
@@ -89,68 +90,8 @@ function GalleryBg({ reduced }: { reduced: boolean }) {
   if (reduced) return null
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-
-      {/* Top-left corner beam */}
-      <motion.div
-        className="absolute"
-        style={{
-          width: 700, height: 700,
-          top: '-30%', left: '-20%',
-          background: 'radial-gradient(circle, rgba(27,99,163,0.07) 0%, transparent 65%)',
-          filter: 'blur(70px)',
-          mixBlendMode: 'multiply',
-        }}
-        animate={{ x: [0, 50, 0], y: [0, 40, 0], scale: [1, 1.15, 1] }}
-        transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
-      />
-
-      {/* Bottom-right beam */}
-      <motion.div
-        className="absolute"
-        style={{
-          width: 600, height: 600,
-          bottom: '-20%', right: '-15%',
-          background: 'radial-gradient(circle, rgba(36,114,182,0.06) 0%, transparent 65%)',
-          filter: 'blur(80px)',
-          mixBlendMode: 'multiply',
-        }}
-        animate={{ x: [0, -40, 0], y: [0, -35, 0], scale: [1.1, 0.9, 1.1] }}
-        transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 6 }}
-      />
-
-      {/* Center subtle glow */}
-      <motion.div
-        className="absolute"
-        style={{
-          width: 400, height: 400,
-          top: '35%', left: '40%',
-          background: 'radial-gradient(circle, rgba(122,184,232,0.05) 0%, transparent 65%)',
-          filter: 'blur(50px)',
-          mixBlendMode: 'multiply',
-        }}
-        animate={{ scale: [1, 1.35, 1], x: [-20, 20, -20] }}
-        transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
-      />
-
-      {/* Grain */}
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundSize: '180px 180px',
-          opacity: 0.022,
-        }}
-      />
-
-      {/* Animated horizontal scan line */}
-      <motion.div
-        className="absolute left-0 right-0 h-[1px]"
-        style={{
-          background: 'linear-gradient(90deg, transparent 0%, rgba(27,99,163,0.15) 50%, transparent 100%)',
-        }}
-        animate={{ top: ['-2%', '102%'], opacity: [0, 0.8, 0.8, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', repeatDelay: 10 }}
-      />
+      <div className="aurora-blob gallery-blob-1" />
+      <div className="aurora-blob gallery-blob-2" />
     </div>
   )
 }

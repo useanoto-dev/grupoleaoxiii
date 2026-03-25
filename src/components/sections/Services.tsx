@@ -10,6 +10,7 @@ import {
   useTransform,
   useMotionValueEvent,
 } from 'framer-motion'
+// AnimatedBg uses CSS-only blobs (no Framer Motion) for background animations
 import {
   Stethoscope,
   FlaskConical,
@@ -103,53 +104,10 @@ type Service = typeof services[number]
 
 function AnimatedBg({ reduced }: { reduced: boolean }) {
   if (reduced) return null
-
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-
-      {/* Blob 1 — top-left, primary blue, multiply */}
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: 700, height: 700,
-          top: '-25%', left: '-15%',
-          background: 'radial-gradient(circle, rgba(27,99,163,0.08) 0%, transparent 65%)',
-          filter: 'blur(60px)',
-          mixBlendMode: 'multiply',
-        }}
-        animate={{ x: [0, 60, 0], y: [0, 50, 0], scale: [1, 1.2, 1] }}
-        transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
-      />
-
-      {/* Blob 2 — bottom-right, cyan tint */}
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: 600, height: 600,
-          bottom: '-20%', right: '-12%',
-          background: 'radial-gradient(circle, rgba(36,114,182,0.07) 0%, transparent 65%)',
-          filter: 'blur(80px)',
-          mixBlendMode: 'multiply',
-        }}
-        animate={{ x: [0, -50, 0], y: [0, -40, 0], scale: [1.1, 0.9, 1.1] }}
-        transition={{ duration: 24, repeat: Infinity, ease: 'easeInOut', delay: 7 }}
-      />
-
-      {/* Blob 3 — centre, whisper blue */}
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: 500, height: 500,
-          top: '30%', left: '35%',
-          background: 'radial-gradient(circle, rgba(122,184,232,0.06) 0%, transparent 65%)',
-          filter: 'blur(50px)',
-          mixBlendMode: 'multiply',
-        }}
-        animate={{ scale: [1, 1.3, 1], x: [-30, 30, -30] }}
-        transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
-      />
-
-      {/* Dot grid */}
+      <div className="aurora-blob svc-blob-1" />
+      <div className="aurora-blob svc-blob-2" />
       <svg className="absolute inset-0 w-full h-full opacity-[0.025]">
         <defs>
           <pattern id="svc-dots" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
@@ -158,46 +116,6 @@ function AnimatedBg({ reduced }: { reduced: boolean }) {
         </defs>
         <rect width="100%" height="100%" fill="url(#svc-dots)" />
       </svg>
-
-      {/* Grain overlay */}
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundSize: '180px 180px',
-          opacity: 0.025,
-        }}
-      />
-
-      {/* Horizontal accent lines */}
-      <motion.div
-        className="absolute left-0 right-0 h-px"
-        style={{
-          top: '28%',
-          background: 'linear-gradient(90deg, transparent 0%, rgba(27,99,163,0.12) 50%, transparent 100%)',
-        }}
-        animate={{ opacity: [0.4, 0.9, 0.4] }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      <motion.div
-        className="absolute left-0 right-0 h-px"
-        style={{
-          top: '72%',
-          background: 'linear-gradient(90deg, transparent 0%, rgba(27,99,163,0.10) 50%, transparent 100%)',
-        }}
-        animate={{ opacity: [0.6, 0.2, 0.6] }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
-      />
-
-      {/* Vertical light beam that drifts across */}
-      <motion.div
-        className="absolute top-0 bottom-0 w-px"
-        style={{
-          background: 'linear-gradient(180deg, transparent 0%, rgba(27,99,163,0.10) 50%, transparent 100%)',
-        }}
-        animate={{ left: ['-2%', '102%'], opacity: [0, 1, 1, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'linear', repeatDelay: 12 }}
-      />
     </div>
   )
 }

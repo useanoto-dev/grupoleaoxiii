@@ -73,7 +73,6 @@ type QuickAction = typeof quickActions[number]
 
 function CardBackground({
   blobs,
-  reduced,
 }: {
   blobs: QuickAction['blobs']
   reduced: boolean
@@ -81,7 +80,7 @@ function CardBackground({
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
       {blobs.map((blob, i) => (
-        <motion.div
+        <div
           key={i}
           className="absolute rounded-full"
           style={{
@@ -92,8 +91,6 @@ function CardBackground({
             background: `radial-gradient(circle, ${blob.color} 0%, transparent 65%)`,
             filter: 'blur(45px)',
           }}
-          animate={reduced ? {} : { x: [0, 25, 0], y: [0, 18, 0], scale: [1, 1.18, 1] }}
-          transition={{ duration: blob.dur, repeat: Infinity, ease: 'easeInOut', delay: blob.delay }}
         />
       ))}
       <svg className="absolute inset-0 w-full h-full opacity-[0.06]" aria-hidden="true">
@@ -104,14 +101,6 @@ function CardBackground({
         </defs>
         <rect width="100%" height="100%" fill="url(#dots-qa)" />
       </svg>
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundSize: '160px 160px',
-          opacity: 0.04,
-        }}
-      />
     </div>
   )
 }
@@ -123,7 +112,7 @@ function CardBackground({
 function ActionCard({ action, reduced }: { action: QuickAction; reduced: boolean }) {
   const ref = React.useRef<HTMLDivElement>(null)
   // once: false → anima toda vez que entra/sai do viewport
-  const inView = useInView(ref, { once: false, amount: 0.2 })
+  const inView = useInView(ref, { once: true, amount: 0.15 })
   const Icon = action.icon
 
   return (
@@ -229,7 +218,7 @@ function ActionCard({ action, reduced }: { action: QuickAction; reduced: boolean
 
 export function QuickActions() {
   const headerRef = React.useRef<HTMLDivElement>(null)
-  const headerInView = useInView(headerRef, { once: false, amount: 0.5 })
+  const headerInView = useInView(headerRef, { once: true, amount: 0.3 })
   const reduced = useSafeReducedMotion()
 
   return (
