@@ -15,7 +15,11 @@
 
 # next.js
 /.next/
+**/.next/
 /out/
+
+# node_modules in subdirectories
+**/node_modules/
 
 # production
 /build

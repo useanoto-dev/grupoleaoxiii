@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://clinicaleaoxiii.com.br/sitemap.xml
