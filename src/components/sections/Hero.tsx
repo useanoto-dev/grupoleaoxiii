@@ -58,11 +58,29 @@ function StatNumber({ stat }: { stat: typeof statsData[number] }) {
 // Hero
 // ─────────────────────────────────────────────
 
+const VIDEO_ID = 'nL47gz4bw4A'
+
 export function Hero() {
   const shouldReduceMotion = useSafeReducedMotion()
   const [videoReady, setVideoReady] = React.useState(false)
+  const iframeRef = React.useRef<HTMLIFrameElement>(null)
 
   React.useEffect(() => { setVideoReady(true) }, [])
+
+  // YouTube IFrame API: força playback via postMessage após o iframe carregar.
+  // Necessário porque browsers modernos bloqueiam autoplay por política de segurança
+  // mesmo com autoplay=1 na URL — o postMessage contorna isso programaticamente.
+  const handleIframeLoad = React.useCallback(() => {
+    const tryPlay = () => {
+      iframeRef.current?.contentWindow?.postMessage(
+        JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
+        '*'
+      )
+    }
+    // Tenta imediatamente e novamente após 1s para garantir que o player inicializou
+    tryPlay()
+    setTimeout(tryPlay, 1000)
+  }, [])
 
   const sectionRef = React.useRef<HTMLElement>(null)
 
@@ -105,12 +123,14 @@ export function Hero() {
         >
           {videoReady && (
             <iframe
-              src="https://www.youtube-nocookie.com/embed/nL47gz4bw4A?autoplay=1&mute=1&loop=1&playlist=nL47gz4bw4A&controls=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&playsinline=1&cc_load_policy=0&fs=0&showinfo=0&vq=hd1080"
+              ref={iframeRef}
+              src={`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${VIDEO_ID}&controls=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&playsinline=1&cc_load_policy=0&fs=0&showinfo=0&enablejsapi=1&vq=hd1080`}
               allow="autoplay; encrypted-media; picture-in-picture"
               className="w-full h-full"
               style={{ border: 'none', pointerEvents: 'none' }}
               title="Vídeo de fundo da Clínica Leão XIII"
               aria-hidden="true"
+              onLoad={handleIframeLoad}
             />
           )}
         </div>
