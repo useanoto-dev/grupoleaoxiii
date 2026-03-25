@@ -61,6 +61,33 @@ function StatNumber({ stat }: { stat: typeof statsData[number] }) {
 export function Hero() {
   const shouldReduceMotion = useSafeReducedMotion()
   const sectionRef = React.useRef<HTMLElement>(null)
+  const videoRef = React.useRef<HTMLVideoElement>(null)
+
+  React.useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    // Garante mudo (requisito do browser para autoplay)
+    video.muted = true
+
+    const play = () => video.play().catch(() => {})
+
+    // Tenta imediatamente
+    play()
+
+    // Se o browser bloqueou, tenta de novo na primeira interação do usuário
+    const onInteraction = () => { play(); cleanup() }
+    const cleanup = () => {
+      document.removeEventListener('click',      onInteraction)
+      document.removeEventListener('touchstart', onInteraction)
+      document.removeEventListener('keydown',    onInteraction)
+    }
+    document.addEventListener('click',      onInteraction, { once: true })
+    document.addEventListener('touchstart', onInteraction, { once: true, passive: true })
+    document.addEventListener('keydown',    onInteraction, { once: true })
+
+    return cleanup
+  }, [])
 
   const dur = shouldReduceMotion ? 0 : 0.65
 
@@ -94,6 +121,7 @@ export function Hero() {
         <div className="absolute inset-0 bg-[#013A6E]" />
 
         <video
+          ref={videoRef}
           className="absolute inset-0 w-full h-full object-cover"
           src="/video-fundo.mp4"
           autoPlay
@@ -102,6 +130,8 @@ export function Hero() {
           playsInline
           preload="auto"
           aria-hidden="true"
+          disablePictureInPicture
+          disableRemotePlayback
         />
 
         {/* Overlay escuro para contraste com o conteúdo */}
