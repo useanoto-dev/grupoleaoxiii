@@ -29,95 +29,9 @@ function AuroraBackground({ reduced }: { reduced: boolean }) {
   if (reduced) return null
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-
-      {/* Blob 1 — grande, centro-esquerda */}
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: 800, height: 800,
-          top: '-20%', left: '-10%',
-          background: 'radial-gradient(circle, rgba(36,114,182,0.55) 0%, transparent 65%)',
-          filter: 'blur(80px)',
-          mixBlendMode: 'screen',
-        }}
-        animate={{ x: [-60, 80, -60], y: [-30, 60, -30], scale: [1, 1.25, 1] }}
-        transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
-      />
-
-      {/* Blob 2 — médio, direita */}
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: 600, height: 600,
-          bottom: '-15%', right: '-8%',
-          background: 'radial-gradient(circle, rgba(6,62,132,0.65) 0%, transparent 65%)',
-          filter: 'blur(100px)',
-          mixBlendMode: 'screen',
-        }}
-        animate={{ x: [60, -80, 60], y: [40, -50, 40], scale: [1.1, 0.85, 1.1] }}
-        transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 6 }}
-      />
-
-      {/* Blob 3 — menor, centro — destaque azul claro */}
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: 450, height: 450,
-          top: '20%', left: '40%',
-          background: 'radial-gradient(circle, rgba(122,184,232,0.28) 0%, transparent 65%)',
-          filter: 'blur(60px)',
-          mixBlendMode: 'screen',
-        }}
-        animate={{ x: [-50, 50, -50], scale: [1, 1.4, 1] }}
-        transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
-      />
-
-      {/* Blob 4 — topo direita, sutil */}
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: 350, height: 350,
-          top: '-5%', right: '20%',
-          background: 'radial-gradient(circle, rgba(27,99,163,0.35) 0%, transparent 60%)',
-          filter: 'blur(50px)',
-          mixBlendMode: 'screen',
-        }}
-        animate={{ y: [0, 40, 0], scale: [1, 1.2, 1] }}
-        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 8 }}
-      />
-
-      {/* Grain texture */}
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundSize: '180px 180px',
-          opacity: 0.045,
-        }}
-      />
-
-      {/* Partículas entrando dos lados */}
-      {[
-        { x: '-120px', y: '25%', delay: 0 },
-        { x: '-80px',  y: '65%', delay: 3 },
-        { x: '120%',   y: '40%', delay: 1.5 },
-        { x: '110%',   y: '70%', delay: 4 },
-        { x: '45%',    y: '-20px', delay: 2 },
-        { x: '70%',    y: '110%', delay: 5 },
-      ].map((p, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-1 h-1 rounded-full bg-[#7ab8e8]"
-          style={{ left: p.x, top: p.y }}
-          animate={{
-            x: i < 2 ? [0, 80, 0] : i < 4 ? [0, -80, 0] : [0, 0, 0],
-            y: i >= 4 ? (i === 4 ? [0, 60, 0] : [0, -60, 0]) : [0, 20, 0],
-            opacity: [0, 0.6, 0],
-            scale: [0, 1.5, 0],
-          }}
-          transition={{ duration: 6 + i, repeat: Infinity, ease: 'easeInOut', delay: p.delay }}
-        />
-      ))}
+      <div className="aurora-blob aurora-blob-1" />
+      <div className="aurora-blob aurora-blob-2" />
+      <div className="aurora-blob aurora-blob-3" />
     </div>
   )
 }
@@ -206,42 +120,21 @@ function StaticGrid({ isInView }: { isInView: boolean }) {
 const AUTOPLAY_INTERVAL = 4000
 
 function ProgressBar({ running }: { running: boolean }) {
-  const [width, setWidth] = React.useState(0)
-  const rafRef = React.useRef<number | null>(null)
-  const startTimeRef = React.useRef<number | null>(null)
+  const [animKey, setAnimKey] = React.useState(0)
 
   React.useEffect(() => {
-    if (!running) {
-      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
-      setWidth(0)
-      startTimeRef.current = null
-      return
-    }
-
-    startTimeRef.current = null
-
-    function tick(now: number) {
-      if (startTimeRef.current === null) startTimeRef.current = now
-      const elapsed = now - startTimeRef.current
-      const pct = Math.min((elapsed / AUTOPLAY_INTERVAL) * 100, 100)
-      setWidth(pct)
-      if (pct < 100) {
-        rafRef.current = requestAnimationFrame(tick)
-      }
-    }
-
-    rafRef.current = requestAnimationFrame(tick)
-    return () => {
-      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
-    }
+    if (running) setAnimKey((k) => k + 1)
   }, [running])
 
   return (
     <div className="h-[2px] w-full bg-white/10 rounded-full overflow-hidden mb-4" aria-hidden="true">
-      <div
-        className="h-full bg-[#7ab8e8] rounded-full transition-none"
-        style={{ width: `${width}%` }}
-      />
+      {running && (
+        <div
+          key={animKey}
+          className="h-full bg-[#7ab8e8] rounded-full"
+          style={{ animation: `testimonial-progress ${AUTOPLAY_INTERVAL}ms linear forwards` }}
+        />
+      )}
     </div>
   )
 }

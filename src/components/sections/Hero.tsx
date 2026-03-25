@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon'
@@ -64,11 +64,7 @@ export function Hero() {
 
   React.useEffect(() => { setVideoReady(true) }, [])
 
-  // Ref na section inteira — ativa counters assim que entra na viewport
   const sectionRef = React.useRef<HTMLElement>(null)
-  // Scroll parallax — watermark sobe enquanto o usuário desce
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
-  const watermarkY = useTransform(scrollYProgress, [0, 1], ['0%', shouldReduceMotion ? '0%' : '-35%'])
 
   const dur = shouldReduceMotion ? 0 : 0.65
 
@@ -128,15 +124,14 @@ export function Hero() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(1,58,110,0.55)_100%)]" />
       </div>
 
-      {/* ── Large text watermark — parallax ──── */}
-      <motion.div
+      {/* ── Large text watermark — static ──── */}
+      <div
         aria-hidden="true"
         className="absolute right-0 top-1/2 z-0 pointer-events-none select-none overflow-hidden"
         style={{
           writingMode: 'vertical-rl',
           rotate: '180deg',
-          translateY: '-50%',
-          y: watermarkY,
+          transform: 'translateY(-50%)',
         }}
       >
         <span
@@ -151,7 +146,7 @@ export function Hero() {
         >
           LEÃO XIII
         </span>
-      </motion.div>
+      </div>
 
       {/* ── Main content ─────────────────────── */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-20 md:pt-32 md:pb-28">
