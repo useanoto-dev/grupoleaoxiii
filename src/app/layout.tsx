@@ -157,9 +157,6 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        {/* Preconnect to external origins used in the page */}
-        <link rel="preconnect" href="https://www.youtube.com" />
-        <link rel="preconnect" href="https://www.youtube-nocookie.com" />
         <link rel="dns-prefetch" href="https://biodataweb.net" />
         <link rel="dns-prefetch" href="https://wa.me" />
       </head>

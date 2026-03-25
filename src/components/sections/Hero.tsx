@@ -58,30 +58,8 @@ function StatNumber({ stat }: { stat: typeof statsData[number] }) {
 // Hero
 // ─────────────────────────────────────────────
 
-const VIDEO_ID = 'nL47gz4bw4A'
-
 export function Hero() {
   const shouldReduceMotion = useSafeReducedMotion()
-  const [videoReady, setVideoReady] = React.useState(false)
-  const iframeRef = React.useRef<HTMLIFrameElement>(null)
-
-  React.useEffect(() => { setVideoReady(true) }, [])
-
-  // YouTube IFrame API: força playback via postMessage após o iframe carregar.
-  // Necessário porque browsers modernos bloqueiam autoplay por política de segurança
-  // mesmo com autoplay=1 na URL — o postMessage contorna isso programaticamente.
-  const handleIframeLoad = React.useCallback(() => {
-    const tryPlay = () => {
-      iframeRef.current?.contentWindow?.postMessage(
-        JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
-        '*'
-      )
-    }
-    // Tenta imediatamente e novamente após 1s para garantir que o player inicializou
-    tryPlay()
-    setTimeout(tryPlay, 1000)
-  }, [])
-
   const sectionRef = React.useRef<HTMLElement>(null)
 
   const dur = shouldReduceMotion ? 0 : 0.65
@@ -110,33 +88,21 @@ export function Hero() {
       className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-[#013A6E]"
       aria-label="Seção principal"
     >
-      {/* ── YouTube video background ──────────── */}
+      {/* ── Vídeo de fundo ──────────────────────── */}
       <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
-        <div
-          className={[
-            'absolute top-1/2 left-1/2',
-            '-translate-x-1/2 -translate-y-1/2',
-            'w-screen h-[56.25vw]',
-            'min-h-full min-w-[177.78vh]',
-            'pointer-events-none',
-          ].join(' ')}
-        >
-          {videoReady && (
-            <iframe
-              ref={iframeRef}
-              src={`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${VIDEO_ID}&controls=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&playsinline=1&cc_load_policy=0&fs=0&showinfo=0&enablejsapi=1&vq=hd1080`}
-              allow="autoplay; encrypted-media; picture-in-picture"
-              className="w-full h-full"
-              style={{ border: 'none', pointerEvents: 'none' }}
-              title="Vídeo de fundo da Clínica Leão XIII"
-              aria-hidden="true"
-              onLoad={handleIframeLoad}
-            />
-          )}
-        </div>
+        {/* Fallback — exibido enquanto o vídeo carrega */}
+        <div className="absolute inset-0 bg-[#013A6E]" />
 
-        {/* Fallback escuro */}
-        <div className="absolute inset-0 -z-10 bg-[#013A6E]" />
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          src="/video-fundo.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        />
 
         {/* Overlay escuro para contraste com o conteúdo */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#013A6E]/85 via-[#063E84]/70 to-[#013A6E]/88" />
