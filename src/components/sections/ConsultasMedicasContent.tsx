@@ -270,7 +270,7 @@ function SpecialtyCard({ specialty, index }: SpecialtyCardProps) {
 
 export function ConsultasMedicasContent() {
   const gridRef = React.useRef<HTMLDivElement>(null)
-  const isInView = useInView(gridRef, { once: false, margin: '-80px' })
+  const isInView = useInView(gridRef, { once: true, margin: '-80px' })
 
   return (
     <>

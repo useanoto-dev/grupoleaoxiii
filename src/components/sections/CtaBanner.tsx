@@ -35,7 +35,7 @@ function MedicalCrossPattern() {
 
 export function CtaBanner() {
   const ref = React.useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: false, amount: 0.3 })
+  const isInView = useInView(ref, { once: true, amount: 0.2 })
 
   return (
     <section
@@ -46,7 +46,7 @@ export function CtaBanner() {
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#063E84] via-primary to-secondary px-8 py-14 md:px-16 md:py-16"
         >

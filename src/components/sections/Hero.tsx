@@ -105,7 +105,7 @@ export function Hero() {
         >
           {videoReady && (
             <iframe
-              src="https://www.youtube-nocookie.com/embed/nL47gz4bw4A?autoplay=1&mute=1&loop=1&playlist=nL47gz4bw4A&controls=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&playsinline=1&cc_load_policy=0&fs=0&showinfo=0"
+              src="https://www.youtube-nocookie.com/embed/nL47gz4bw4A?autoplay=1&mute=1&loop=1&playlist=nL47gz4bw4A&controls=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&playsinline=1&cc_load_policy=0&fs=0&showinfo=0&vq=hd1080"
               allow="autoplay; encrypted-media; picture-in-picture"
               className="w-full h-full"
               style={{ border: 'none', pointerEvents: 'none' }}

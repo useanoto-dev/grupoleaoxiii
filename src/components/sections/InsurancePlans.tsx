@@ -47,102 +47,10 @@ const plans = [
 
 function MeshBackground({ reduced }: { reduced: boolean }) {
   if (reduced) return null
-
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-
-      {/* Blob 1 — top-left orbiting slowly */}
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: 800, height: 800,
-          top: '-30%', left: '-20%',
-          background: 'radial-gradient(circle, rgba(27,99,163,0.08) 0%, transparent 60%)',
-          filter: 'blur(70px)',
-          mixBlendMode: 'multiply',
-        }}
-        animate={{ x: [0, 70, 0], y: [0, 60, 0], scale: [1, 1.2, 1] }}
-        transition={{ duration: 24, repeat: Infinity, ease: 'easeInOut' }}
-      />
-
-      {/* Blob 2 — bottom-right counter-orbit */}
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: 650, height: 650,
-          bottom: '-25%', right: '-15%',
-          background: 'radial-gradient(circle, rgba(36,114,182,0.07) 0%, transparent 60%)',
-          filter: 'blur(90px)',
-          mixBlendMode: 'multiply',
-        }}
-        animate={{ x: [0, -60, 0], y: [0, -50, 0], scale: [1.1, 0.85, 1.1] }}
-        transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut', delay: 8 }}
-      />
-
-      {/* Blob 3 — centre warm accent */}
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: 450, height: 450,
-          top: '20%', left: '30%',
-          background: 'radial-gradient(circle, rgba(122,184,232,0.06) 0%, transparent 65%)',
-          filter: 'blur(60px)',
-          mixBlendMode: 'multiply',
-        }}
-        animate={{ scale: [1, 1.4, 1], x: [-30, 40, -30] }}
-        transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
-      />
-
-      {/* Floating medical cross SVGs */}
-      {[
-        { top: '8%',  left: '1%',    delay: 0,   size: 44, opacity: 0.05  },
-        { top: '72%', left: '2%',    delay: 2,   size: 32, opacity: 0.035 },
-        { top: '18%', right: '1%',   delay: 1,   size: 38, opacity: 0.045 },
-        { top: '60%', right: '3%',   delay: 3,   size: 28, opacity: 0.03  },
-        { top: '42%', left: '0.5%',  delay: 4.5, size: 22, opacity: 0.028 },
-        { top: '35%', right: '1.5%', delay: 1.8, size: 20, opacity: 0.028 },
-      ].map((c, i) => (
-        <motion.svg
-          key={i}
-          viewBox="0 0 44 44"
-          fill="#1B63A3"
-          className="absolute"
-          style={{
-            top: c.top,
-            left: (c as { left?: string }).left,
-            right: (c as { right?: string }).right,
-            width: c.size,
-            height: c.size,
-            opacity: c.opacity,
-          }}
-          animate={{ y: [0, -14, 0], rotate: [0, 8, 0] }}
-          transition={{ duration: 7 + i * 1.3, repeat: Infinity, ease: 'easeInOut', delay: c.delay }}
-        >
-          <rect x="17" y="4" width="10" height="36" rx="3" />
-          <rect x="4" y="17" width="36" height="10" rx="3" />
-        </motion.svg>
-      ))}
-
-      {/* Grain */}
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundSize: '180px 180px',
-          opacity: 0.022,
-        }}
-      />
-
-      {/* Horizontal line */}
-      <motion.div
-        className="absolute left-0 right-0 h-px"
-        style={{
-          top: '50%',
-          background: 'linear-gradient(90deg, transparent 0%, rgba(27,99,163,0.10) 50%, transparent 100%)',
-        }}
-        animate={{ opacity: [0.2, 0.6, 0.2] }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-      />
+      <div className="aurora-blob svc-blob-1" />
+      <div className="aurora-blob svc-blob-2" />
     </div>
   )
 }

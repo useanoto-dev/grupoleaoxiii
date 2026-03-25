@@ -5,7 +5,6 @@ import { motion, useInView } from 'framer-motion'
 import { MapPin, Phone, Clock, ExternalLink } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon'
-import { useSafeReducedMotion } from '@/lib/useSafeReducedMotion'
 
 // ─────────────────────────────────────────────
 // Locations data
@@ -67,93 +66,21 @@ const locations = [
 ] as const
 
 // ─────────────────────────────────────────────
-// Radar background
+// Location card — static, no per-card observer
 // ─────────────────────────────────────────────
-
-function RadarBackground({ reduced }: { reduced: boolean }) {
-  if (reduced) return null
-
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: 700, height: 700,
-          top: '-25%', left: '-15%',
-          background: 'radial-gradient(circle, rgba(27,99,163,0.07) 0%, transparent 65%)',
-          filter: 'blur(70px)',
-          mixBlendMode: 'multiply',
-        }}
-        animate={{ x: [0, 50, 0], y: [0, 40, 0], scale: [1, 1.2, 1] }}
-        transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: 600, height: 600,
-          bottom: '-20%', right: '-12%',
-          background: 'radial-gradient(circle, rgba(36,114,182,0.06) 0%, transparent 65%)',
-          filter: 'blur(80px)',
-          mixBlendMode: 'multiply',
-        }}
-        animate={{ x: [0, -45, 0], y: [0, -35, 0], scale: [1.1, 0.9, 1.1] }}
-        transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 6 }}
-      />
-      {[0, 1, 2, 3].map((i) => (
-        <motion.div
-          key={i}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/15"
-          style={{ width: `${(i + 1) * 160}px`, height: `${(i + 1) * 160}px` }}
-          animate={{ opacity: [0.06, 0.02, 0.06], scale: [1, 1.04, 1] }}
-          transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: i * 0.6 }}
-        />
-      ))}
-      <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/15"
-        animate={{ width: ['0px', '700px'], height: ['0px', '700px'], opacity: [0.3, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeOut', repeatDelay: 3 }}
-      />
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundSize: '180px 180px',
-          opacity: 0.022,
-        }}
-      />
-    </div>
-  )
-}
-
-// ─────────────────────────────────────────────
-// Location card — rises from below
-// ─────────────────────────────────────────────
-
-// Direção de entrada por card: esquerda, baixo, baixo, direita
-const enterFromMap = [
-  { x: -60, y: 0 },
-  { x: 0,   y: 60 },
-  { x: 0,   y: 60 },
-  { x: 60,  y: 0  },
-]
 
 interface LocationCardProps {
   location: typeof locations[number]
   index: number
-  reduced: boolean
+  isInView: boolean
 }
 
-function LocationCard({ location, index, reduced }: LocationCardProps) {
-  const ref = React.useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: false, amount: 0.2 })
-  const enterFrom = enterFromMap[index] ?? { x: 0, y: 50 }
-
+function LocationCard({ location, index, isInView }: LocationCardProps) {
   return (
-    <div ref={ref}>
     <motion.div
-      initial={{ opacity: 0, x: enterFrom.x, y: enterFrom.y }}
-      animate={inView ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: enterFrom.x, y: enterFrom.y }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, y: 32 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.55, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
         'bg-white rounded-2xl p-6',
         'border border-border/60 shadow-card',
@@ -193,7 +120,7 @@ function LocationCard({ location, index, reduced }: LocationCardProps) {
           <Phone className="h-4 w-4 text-muted shrink-0" aria-hidden="true" />
           <a
             href={`tel:${location.phone.replace(/\D/g, '')}`}
-            className="font-body text-sm text-text hover:text-primary transition-colors duration-200 cursor-pointer"
+            className="font-body text-sm text-text hover:text-primary transition-colors duration-200"
           >
             {location.phone}
           </a>
@@ -215,7 +142,7 @@ function LocationCard({ location, index, reduced }: LocationCardProps) {
             'flex-1 flex items-center justify-center gap-1.5 h-9 rounded-lg',
             'border border-border text-text font-body text-xs font-medium',
             'hover:bg-primary/5 hover:text-primary hover:border-primary/30',
-            'transition-colors duration-200 cursor-pointer',
+            'transition-colors duration-200',
             'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50'
           )}
           aria-label={`Ver no mapa: ${location.name}`}
@@ -232,7 +159,7 @@ function LocationCard({ location, index, reduced }: LocationCardProps) {
           className={cn(
             'flex-1 flex items-center justify-center gap-1.5 h-9 rounded-lg',
             'bg-[#25D366] text-white font-body text-xs font-medium',
-            'hover:bg-[#20b858] transition-colors duration-200 cursor-pointer',
+            'hover:bg-[#20b858] transition-colors duration-200',
             'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366]/50'
           )}
           aria-label={`Agendar pelo WhatsApp na unidade ${location.name}`}
@@ -242,34 +169,37 @@ function LocationCard({ location, index, reduced }: LocationCardProps) {
         </a>
       </div>
     </motion.div>
-    </div>
   )
 }
 
 // ─────────────────────────────────────────────
-// Section
+// Section — single observer at section level
 // ─────────────────────────────────────────────
 
 export function Locations() {
-  const reduced = useSafeReducedMotion()
-  const headerRef = React.useRef<HTMLDivElement>(null)
-  const headerInView = useInView(headerRef, { once: false, amount: 0.5 })
+  const sectionRef = React.useRef<HTMLDivElement>(null)
+  // once: true — anima apenas uma vez, nunca mais re-anima
+  const isInView = useInView(sectionRef, { once: true, margin: '-60px' })
 
   return (
     <section
+      ref={sectionRef}
       className="relative py-16 md:py-24 bg-white overflow-hidden"
       aria-labelledby="locations-heading"
     >
-      <RadarBackground reduced={reduced} />
+      {/* CSS-only background blobs — zero JS */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        <div className="aurora-blob svc-blob-1" />
+        <div className="aurora-blob svc-blob-2" />
+      </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
-          ref={headerRef}
           className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10"
-          initial={{ opacity: 0, x: -40 }}
-          animate={headerInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -40 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
         >
           <div>
             <p className="text-primary text-xs tracking-[0.25em] uppercase font-body font-semibold mb-2">
@@ -287,14 +217,14 @@ export function Locations() {
           </p>
         </motion.div>
 
-        {/* All 4 locations — always visible */}
+        {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {locations.map((location, index) => (
             <LocationCard
               key={location.id}
               location={location}
               index={index}
-              reduced={reduced}
+              isInView={isInView}
             />
           ))}
         </div>
