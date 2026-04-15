@@ -73,9 +73,11 @@ type QuickAction = typeof quickActions[number]
 
 function CardBackground({
   blobs,
+  patternId,
 }: {
   blobs: QuickAction['blobs']
   reduced: boolean
+  patternId: string
 }) {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
@@ -95,11 +97,11 @@ function CardBackground({
       ))}
       <svg className="absolute inset-0 w-full h-full opacity-[0.06]" aria-hidden="true">
         <defs>
-          <pattern id="dots-qa" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+          <pattern id={patternId} x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
             <circle cx="1.5" cy="1.5" r="1" fill="white" />
           </pattern>
         </defs>
-        <rect width="100%" height="100%" fill="url(#dots-qa)" />
+        <rect width="100%" height="100%" fill={`url(#${patternId})`} />
       </svg>
     </div>
   )
@@ -132,7 +134,7 @@ function ActionCard({ action, reduced }: { action: QuickAction; reduced: boolean
         className={cn(
           'group relative overflow-hidden cursor-pointer',
           'rounded-3xl bg-[#0a1628]',
-          'border border-white/8',
+          'border border-white/10',
           'h-[340px] md:h-[380px]',
           'hover:border-white/20',
           'transition-[box-shadow,border-color] duration-500',
@@ -152,7 +154,7 @@ function ActionCard({ action, reduced }: { action: QuickAction; reduced: boolean
           el.style.transform = ''
         }}
       >
-        <CardBackground blobs={action.blobs} reduced={reduced} />
+        <CardBackground blobs={action.blobs} reduced={reduced} patternId={`dots-qa-${action.id}`} />
 
         <span
           className="absolute bottom-2 right-5 font-heading font-bold text-white select-none pointer-events-none"

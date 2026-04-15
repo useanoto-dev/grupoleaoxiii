@@ -1,0 +1,2122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design System — Clínica Leão XIII</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ──────────────────────────────────────────────
+       CSS TOKENS — espelho exato do globals.css
+    ────────────────────────────────────────────── */
+    :root {
+      /* Colors */
+      --color-primary:              #1B63A3;
+      --color-primary-dark:         #063E84;
+      --color-primary-foreground:   #ffffff;
+      --color-secondary:            #2472B6;
+      --color-secondary-foreground: #ffffff;
+      --color-cta:                  #068419;
+      --color-cta-dark:             #056316;
+      --color-cta-foreground:       #ffffff;
+      --color-accent:               #C8960C;
+      --color-accent-foreground:    #ffffff;
+      --color-hero-bg:              #013A6E;
+      --color-footer-bg:            #0A2540;
+      --color-highlight:            #7ab8e8;
+      --color-whatsapp:             #25D366;
+
+      /* Neutrals */
+      --color-background:   #f4f8fc;
+      --color-surface:      #ffffff;
+      --color-text:         #0a1628;
+      --color-muted:        #4a5c70;
+      --color-muted-fg:     #374151;
+      --color-border:       #d0dde8;
+
+      /* Semantic */
+      --color-destructive:  #ef4444;
+      --color-warning:      #f59e0b;
+      --color-success:      #068419;
+
+      /* Fonts */
+      --font-heading: "Figtree", sans-serif;
+      --font-body:    "Noto Sans", sans-serif;
+
+      /* Border Radius */
+      --radius-sm:  0.375rem;
+      --radius-md:  0.5rem;
+      --radius-lg:  0.75rem;
+      --radius-xl:  1rem;
+      --radius-2xl: 1.5rem;
+      --radius-full: 9999px;
+
+      /* Shadows */
+      --shadow-card:     0 1px 3px 0 rgba(0,0,0,.10), 0 1px 2px -1px rgba(0,0,0,.10);
+      --shadow-elevated: 0 4px 6px -1px rgba(0,0,0,.10), 0 2px 4px -2px rgba(0,0,0,.10);
+      --shadow-floating: 0 10px 15px -3px rgba(0,0,0,.10), 0 4px 6px -4px rgba(0,0,0,.10);
+
+      /* Spacing scale */
+      --space-1:  0.25rem;
+      --space-2:  0.5rem;
+      --space-3:  0.75rem;
+      --space-4:  1rem;
+      --space-5:  1.25rem;
+      --space-6:  1.5rem;
+      --space-8:  2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+      --space-20: 5rem;
+    }
+
+    /* ──────────────────────────────────────────────
+       RESET + BASE
+    ────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--color-background);
+      color: var(--color-text);
+      line-height: 1.6;
+    }
+
+    h1,h2,h3,h4,h5,h6 {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      line-height: 1.25;
+      color: var(--color-text);
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; height: auto; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f0f7ff; }
+    ::-webkit-scrollbar-thumb { background: var(--color-primary); border-radius: 3px; }
+
+    /* ──────────────────────────────────────────────
+       DS SHELL
+    ────────────────────────────────────────────── */
+    .ds-sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 240px;
+      height: 100vh;
+      background: var(--color-footer-bg);
+      color: rgba(255,255,255,.75);
+      overflow-y: auto;
+      padding: var(--space-6);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .ds-sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-4) 0 var(--space-6);
+      border-bottom: 1px solid rgba(255,255,255,.1);
+      margin-bottom: var(--space-4);
+    }
+
+    .ds-sidebar-logo-mark {
+      width: 36px; height: 36px;
+      background: var(--color-primary);
+      border-radius: var(--radius-lg);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-heading);
+      font-weight: 900;
+      color: #fff;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+      flex-shrink: 0;
+    }
+
+    .ds-sidebar-title {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.875rem;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .ds-sidebar-subtitle {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,.4);
+      margin-top: 2px;
+    }
+
+    .ds-nav-group {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.35);
+      padding: var(--space-4) 0 var(--space-2);
+    }
+
+    .ds-nav-link {
+      display: block;
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-md);
+      font-size: 0.8125rem;
+      color: rgba(255,255,255,.65);
+      transition: background .15s, color .15s;
+      cursor: pointer;
+    }
+
+    .ds-nav-link:hover, .ds-nav-link.active {
+      background: rgba(255,255,255,.08);
+      color: #fff;
+    }
+
+    .ds-main {
+      margin-left: 240px;
+      padding: var(--space-12) var(--space-10);
+      max-width: 1100px;
+    }
+
+    /* ──────────────────────────────────────────────
+       SECTION LAYOUT
+    ────────────────────────────────────────────── */
+    .ds-section {
+      padding: var(--space-16) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .ds-section:last-child { border-bottom: none; }
+
+    .ds-section-header {
+      margin-bottom: var(--space-10);
+    }
+
+    .ds-section-eyebrow {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      margin-bottom: var(--space-2);
+    }
+
+    .ds-section-title {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: var(--space-2);
+    }
+
+    .ds-section-desc {
+      font-size: 0.9375rem;
+      color: var(--color-muted);
+      max-width: 56ch;
+    }
+
+    /* ──────────────────────────────────────────────
+       TOKEN GRID
+    ────────────────────────────────────────────── */
+    .token-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: var(--space-4);
+    }
+
+    .token-swatch {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-card);
+      background: var(--color-surface);
+    }
+
+    .token-swatch-color {
+      height: 80px;
+      width: 100%;
+    }
+
+    .token-swatch-body {
+      padding: var(--space-3) var(--space-4);
+    }
+
+    .token-swatch-name {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: 0.8125rem;
+      color: var(--color-text);
+    }
+
+    .token-swatch-value {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 0.7rem;
+      color: var(--color-muted);
+      margin-top: 2px;
+    }
+
+    .token-swatch-var {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 0.65rem;
+      color: var(--color-primary);
+      margin-top: 2px;
+      opacity: 0.75;
+    }
+
+    /* ──────────────────────────────────────────────
+       TYPOGRAPHY SPECIMENS
+    ────────────────────────────────────────────── */
+    .type-specimen {
+      display: grid;
+      gap: var(--space-6);
+    }
+
+    .type-row {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-8);
+      padding: var(--space-5) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .type-row:last-child { border-bottom: none; }
+
+    .type-meta {
+      width: 140px;
+      flex-shrink: 0;
+    }
+
+    .type-meta-label {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 0.7rem;
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+
+    .type-meta-detail {
+      font-size: 0.6875rem;
+      color: var(--color-muted);
+      margin-top: 2px;
+      line-height: 1.5;
+    }
+
+    /* ──────────────────────────────────────────────
+       COMPONENT SHOWCASE
+    ────────────────────────────────────────────── */
+    .component-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-6);
+      background: var(--color-surface);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--color-border);
+      margin-bottom: var(--space-6);
+    }
+
+    .component-row.dark-bg {
+      background: var(--color-hero-bg);
+    }
+
+    .component-row.footer-bg {
+      background: var(--color-footer-bg);
+    }
+
+    .component-row-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: var(--space-3);
+    }
+
+    /* ──────────────────────────────────────────────
+       BUTTONS
+    ────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 0.875rem;
+      border-radius: var(--radius-lg);
+      border: none;
+      cursor: pointer;
+      transition: all .2s ease;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    .btn:active { transform: scale(0.98); }
+
+    /* Sizes */
+    .btn-sm   { height: 2.25rem; padding: 0 0.75rem; font-size: 0.75rem; border-radius: var(--radius-md); }
+    .btn-md   { height: 2.75rem; padding: 0 1.25rem; }
+    .btn-lg   { height: 3rem;    padding: 0 2rem;    font-size: 1rem;    border-radius: var(--radius-xl); }
+    .btn-icon { height: 2.75rem; width: 2.75rem; padding: 0; }
+
+    /* Variants */
+    .btn-primary {
+      background: var(--color-primary);
+      color: var(--color-primary-foreground);
+      box-shadow: var(--shadow-card);
+    }
+    .btn-primary:hover { background: #1557921a; background: #1557921a; filter: brightness(1.08); box-shadow: var(--shadow-elevated); }
+
+    .btn-cta {
+      background: var(--color-cta);
+      color: var(--color-cta-foreground);
+      box-shadow: var(--shadow-card);
+    }
+    .btn-cta:hover { filter: brightness(1.07); box-shadow: var(--shadow-elevated); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--color-primary);
+      border: 1.5px solid var(--color-primary);
+    }
+    .btn-outline:hover { background: rgba(27,99,163,.05); box-shadow: var(--shadow-card); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--color-text);
+    }
+    .btn-ghost:hover { background: rgba(27,99,163,.08); color: var(--color-primary); }
+
+    .btn-link {
+      background: transparent;
+      color: var(--color-primary);
+      padding-left: 0; padding-right: 0;
+      height: auto;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .btn-destructive {
+      background: #dc2626;
+      color: #fff;
+    }
+    .btn-destructive:hover { filter: brightness(1.07); }
+
+    .btn-pill {
+      border-radius: var(--radius-full);
+    }
+
+    .btn-pill-outline {
+      border-radius: var(--radius-full);
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,.25);
+      color: rgba(255,255,255,.9);
+    }
+    .btn-pill-outline:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.4); }
+
+    .btn-whatsapp {
+      background: var(--color-whatsapp);
+      color: #fff;
+      border-radius: var(--radius-xl);
+    }
+    .btn-whatsapp:hover { filter: brightness(1.05); }
+
+    .btn:disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    /* ──────────────────────────────────────────────
+       BADGES
+    ────────────────────────────────────────────── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-full);
+      padding: 0.125rem 0.625rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      font-family: var(--font-body);
+      border: 1px solid transparent;
+      transition: background .2s;
+    }
+
+    .badge-default   { background: rgba(27,99,163,.1);  color: var(--color-primary); border-color: rgba(27,99,163,.2); }
+    .badge-success   { background: rgba(6,132,25,.1);   color: #166534;              border-color: rgba(6,132,25,.2); }
+    .badge-warning   { background: #fffbeb;             color: #92400e;              border-color: #fde68a; }
+    .badge-error     { background: #fef2f2;             color: #991b1b;              border-color: #fecaca; }
+    .badge-outline   { background: transparent;         color: var(--color-text);    border-color: var(--color-border); }
+    .badge-secondary { background: rgba(36,114,182,.1); color: var(--color-text);    border-color: rgba(36,114,182,.2); }
+
+    /* ──────────────────────────────────────────────
+       CARDS
+    ────────────────────────────────────────────── */
+    .card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-card);
+      transition: box-shadow .2s;
+      overflow: hidden;
+    }
+
+    .card:hover { box-shadow: var(--shadow-elevated); }
+
+    .card-glass {
+      background: rgba(255,255,255,.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,.3);
+      box-shadow: var(--shadow-elevated);
+    }
+
+    .card-header   { padding: 1.5rem 1.5rem 0; }
+    .card-content  { padding: 1.5rem; }
+    .card-footer   { padding: 0 1.5rem 1.5rem; display: flex; align-items: center; }
+    .card-title    { font-family: var(--font-heading); font-size: 1.25rem; font-weight: 600; color: var(--color-text); }
+    .card-desc     { font-size: 0.875rem; color: var(--color-muted); margin-top: 0.375rem; line-height: 1.6; }
+
+    /* Service Card */
+    .service-card {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 1.25rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-card);
+      transition: box-shadow .2s, transform .2s;
+    }
+    .service-card:hover { box-shadow: var(--shadow-elevated); transform: translateY(-1px); }
+
+    .service-icon {
+      flex-shrink: 0;
+      width: 3rem; height: 3rem;
+      border-radius: var(--radius-xl);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.375rem;
+    }
+
+    /* Stat Card */
+    .stat-card {
+      padding: 1.5rem;
+      background: var(--color-surface);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-card);
+    }
+    .stat-number {
+      font-family: var(--font-heading);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--color-highlight);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-top: 0.5rem;
+    }
+
+    /* Testimonial Card */
+    .testimonial-card {
+      padding: 1.5rem;
+      background: var(--color-surface);
+      border-radius: var(--radius-2xl);
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-elevated);
+    }
+    .testimonial-avatar {
+      width: 2.5rem; height: 2.5rem;
+      border-radius: var(--radius-full);
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; color: #fff; font-family: var(--font-heading);
+      flex-shrink: 0;
+    }
+    .stars { color: #f59e0b; font-size: 0.875rem; letter-spacing: 2px; }
+
+    /* ──────────────────────────────────────────────
+       FORMS
+    ────────────────────────────────────────────── */
+    .form-group { display: flex; flex-direction: column; gap: 0.375rem; }
+
+    .form-label {
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--color-text);
+    }
+
+    .input {
+      height: 2.75rem;
+      width: 100%;
+      border-radius: var(--radius-lg);
+      border: 1.5px solid var(--color-border);
+      background: var(--color-surface);
+      padding: 0 1rem;
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      color: var(--color-text);
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+    }
+
+    .input::placeholder { color: var(--color-muted); }
+
+    .input:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(27,99,163,.15);
+    }
+
+    .input.error {
+      border-color: var(--color-destructive);
+    }
+
+    .input.error:focus {
+      box-shadow: 0 0 0 3px rgba(239,68,68,.15);
+    }
+
+    .input:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: #f9fafb;
+    }
+
+    textarea.input {
+      height: auto;
+      min-height: 6rem;
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+      resize: vertical;
+    }
+
+    select.input {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5c70' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      padding-right: 2.5rem;
+    }
+
+    .helper-text {
+      font-size: 0.75rem;
+      color: var(--color-muted);
+    }
+
+    .error-text {
+      font-size: 0.75rem;
+      color: var(--color-destructive);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* ──────────────────────────────────────────────
+       RADIUS SHOWCASE
+    ────────────────────────────────────────────── */
+    .radius-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-6);
+      align-items: flex-end;
+    }
+
+    .radius-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .radius-demo {
+      background: var(--color-primary);
+      opacity: .15;
+      border: 2px solid var(--color-primary);
+      width: 72px; height: 72px;
+    }
+
+    .radius-label {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 0.7rem;
+      color: var(--color-muted);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* ──────────────────────────────────────────────
+       SHADOWS
+    ────────────────────────────────────────────── */
+    .shadow-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-8);
+      align-items: flex-end;
+    }
+
+    .shadow-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .shadow-demo {
+      background: var(--color-surface);
+      border-radius: var(--radius-xl);
+      width: 120px; height: 80px;
+    }
+
+    .shadow-label {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 0.7rem;
+      color: var(--color-muted);
+      text-align: center;
+    }
+
+    /* ──────────────────────────────────────────────
+       SPACING
+    ────────────────────────────────────────────── */
+    .spacing-grid { display: flex; flex-direction: column; gap: var(--space-3); }
+
+    .spacing-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .spacing-bar {
+      background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+      height: 10px;
+      border-radius: var(--radius-full);
+      flex-shrink: 0;
+    }
+
+    .spacing-meta {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 0.7rem;
+      color: var(--color-muted);
+      white-space: nowrap;
+    }
+
+    /* ──────────────────────────────────────────────
+       NAVIGATION PREVIEW
+    ────────────────────────────────────────────── */
+    .nav-preview {
+      background: var(--color-hero-bg);
+      border-radius: var(--radius-xl);
+      padding: 0 var(--space-6);
+      height: 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+    }
+
+    .nav-logo-mark {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .nav-logo-circle {
+      width: 40px; height: 40px;
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,.15);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-heading);
+      font-weight: 900;
+      color: #fff;
+      font-size: 0.875rem;
+    }
+
+    .nav-logo-text {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      color: #fff;
+      font-size: 0.9375rem;
+      line-height: 1.2;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+    }
+
+    .nav-link-item {
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius-lg);
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: rgba(255,255,255,.85);
+      transition: background .15s, color .15s;
+      cursor: pointer;
+    }
+
+    .nav-link-item:hover { background: rgba(255,255,255,.1); color: #fff; }
+    .nav-link-item.active { color: #fff; }
+    .nav-link-item.active::after {
+      content: '';
+      display: block;
+      height: 2px;
+      background: #fff;
+      border-radius: 1px;
+      margin-top: 1px;
+    }
+
+    .nav-actions { display: flex; align-items: center; gap: var(--space-2); }
+
+    /* ──────────────────────────────────────────────
+       HERO PREVIEW
+    ────────────────────────────────────────────── */
+    .hero-preview {
+      background: linear-gradient(160deg, #013A6E 0%, #063E84 60%, #013A6E 100%);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-12) var(--space-10);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-preview::before {
+      content: 'LEÃO XIII';
+      position: absolute;
+      right: -2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: 8rem;
+      color: rgba(255,255,255,.05);
+      pointer-events: none;
+      white-space: nowrap;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.5);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 0.95;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-h1 .accent { color: var(--color-highlight); }
+
+    .hero-desc {
+      font-size: 0.9375rem;
+      color: rgba(255,255,255,.6);
+      max-width: 40ch;
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+    /* ──────────────────────────────────────────────
+       FOOTER PREVIEW
+    ────────────────────────────────────────────── */
+    .footer-preview {
+      background: var(--color-footer-bg);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-10) var(--space-10);
+      color: rgba(255,255,255,.7);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: var(--space-10);
+    }
+
+    .footer-col-title {
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #fff;
+      margin-bottom: var(--space-4);
+    }
+
+    .footer-link-item {
+      display: block;
+      font-size: 0.8125rem;
+      color: rgba(255,255,255,.6);
+      padding: 0.2rem 0;
+      transition: color .2s;
+    }
+
+    .footer-link-item:hover { color: #fff; }
+
+    .footer-social {
+      display: flex;
+      gap: var(--space-3);
+      margin-top: var(--space-5);
+    }
+
+    .social-btn {
+      width: 2.5rem; height: 2.5rem;
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,.1);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,.7);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+
+    .social-btn:hover { background: rgba(255,255,255,.2); color: #fff; }
+
+    /* ──────────────────────────────────────────────
+       ANIMATIONS PREVIEW
+    ────────────────────────────────────────────── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(24px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes pulseSlow {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: .8; transform: scale(1.03); }
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @keyframes aurora1 {
+      0%, 100% { transform: translate(-60px, -30px) scale(1); }
+      50%       { transform: translate(80px, 60px) scale(1.2); }
+    }
+
+    .anim-demo {
+      width: 80px; height: 80px;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.875rem;
+    }
+
+    .anim-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-8);
+    }
+
+    .anim-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .anim-label {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 0.7rem;
+      color: var(--color-muted);
+      text-align: center;
+    }
+
+    /* Trigger animations on hover over parent */
+    .anim-item:hover .anim-fadeInUp   { animation: fadeInUp .5s ease-out forwards; }
+    .anim-item:hover .anim-slideRight { animation: slideInRight .4s ease-out forwards; }
+    .anim-item:hover .anim-pulseSlow  { animation: pulseSlow 2s ease-in-out infinite; }
+
+    .anim-fadeInUp, .anim-slideRight, .anim-pulseSlow { animation-play-state: paused; }
+
+    /* ──────────────────────────────────────────────
+       FOCUS RING
+    ────────────────────────────────────────────── */
+    .focus-ring-demo {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+      border-radius: var(--radius-sm);
+    }
+
+    /* ──────────────────────────────────────────────
+       UTILITIES
+    ────────────────────────────────────────────── */
+    .gradient-text {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .glass-card {
+      background: rgba(255,255,255,.8);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,.3);
+      box-shadow: var(--shadow-card);
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--color-border);
+      margin: var(--space-8) 0;
+    }
+
+    .ds-code {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 0.75rem;
+      background: rgba(27,99,163,.07);
+      color: var(--color-primary);
+      border-radius: var(--radius-sm);
+      padding: 0.15rem 0.4rem;
+    }
+
+    .ds-note {
+      background: rgba(200,150,12,.08);
+      border-left: 3px solid var(--color-accent);
+      padding: var(--space-4) var(--space-5);
+      border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+      font-size: 0.875rem;
+      color: var(--color-muted);
+      margin-bottom: var(--space-6);
+    }
+
+    /* ──────────────────────────────────────────────
+       INTRO HERO
+    ────────────────────────────────────────────── */
+    .ds-hero {
+      background: linear-gradient(135deg, var(--color-hero-bg) 0%, var(--color-footer-bg) 100%);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-12) var(--space-12);
+      margin-bottom: var(--space-16);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ds-hero::after {
+      content: 'DS';
+      position: absolute;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: 10rem;
+      color: rgba(255,255,255,.04);
+      pointer-events: none;
+    }
+
+    .ds-hero-eyebrow {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--color-highlight);
+      margin-bottom: var(--space-3);
+    }
+
+    .ds-hero-title {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: var(--space-4);
+      line-height: 1.1;
+    }
+
+    .ds-hero-desc {
+      font-size: 1rem;
+      color: rgba(255,255,255,.6);
+      max-width: 50ch;
+      line-height: 1.7;
+    }
+
+    .ds-hero-meta {
+      display: flex;
+      gap: var(--space-6);
+      margin-top: var(--space-8);
+    }
+
+    .ds-hero-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .ds-hero-meta-value {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-highlight);
+    }
+
+    .ds-hero-meta-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.4);
+    }
+
+    /* ──────────────────────────────────────────────
+       RESPONSIVE SIDEBAR TOGGLE (mobile)
+    ────────────────────────────────────────────── */
+    .ds-mobile-toggle {
+      display: none;
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 200;
+      width: 3rem; height: 3rem;
+      border-radius: var(--radius-full);
+      background: var(--color-primary);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      box-shadow: var(--shadow-floating);
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    @media (max-width: 900px) {
+      .ds-sidebar { transform: translateX(-100%); transition: transform .3s ease; }
+      .ds-sidebar.open { transform: translateX(0); }
+      .ds-main { margin-left: 0; padding: var(--space-8) var(--space-6); }
+      .ds-mobile-toggle { display: flex; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .ds-main { padding: var(--space-6) var(--space-4); }
+      .token-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+      .footer-grid { grid-template-columns: 1fr; }
+      .anim-grid { gap: var(--space-5); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     SIDEBAR
+═════════════════════════════════════════════ -->
+<aside class="ds-sidebar" id="sidebar">
+  <div class="ds-sidebar-logo">
+    <div class="ds-sidebar-logo-mark">L</div>
+    <div>
+      <div class="ds-sidebar-title">Leão XIII</div>
+      <div class="ds-sidebar-subtitle">Design System v1.0</div>
+    </div>
+  </div>
+
+  <div class="ds-nav-group">Fundação</div>
+  <a class="ds-nav-link" href="#intro">Introdução</a>
+  <a class="ds-nav-link" href="#colors">Cores</a>
+  <a class="ds-nav-link" href="#typography">Tipografia</a>
+  <a class="ds-nav-link" href="#spacing">Espaçamento</a>
+  <a class="ds-nav-link" href="#radius">Border Radius</a>
+  <a class="ds-nav-link" href="#shadows">Sombras</a>
+
+  <div class="ds-nav-group">Componentes</div>
+  <a class="ds-nav-link" href="#buttons">Botões</a>
+  <a class="ds-nav-link" href="#badges">Badges</a>
+  <a class="ds-nav-link" href="#cards">Cards</a>
+  <a class="ds-nav-link" href="#forms">Formulários</a>
+
+  <div class="ds-nav-group">Padrões</div>
+  <a class="ds-nav-link" href="#navigation">Navegação</a>
+  <a class="ds-nav-link" href="#hero">Hero Section</a>
+  <a class="ds-nav-link" href="#footer">Rodapé</a>
+  <a class="ds-nav-link" href="#animations">Animações</a>
+  <a class="ds-nav-link" href="#utilities">Utilitários</a>
+</aside>
+
+<!-- Mobile toggle -->
+<button class="ds-mobile-toggle" id="sidebarToggle" aria-label="Menu">☰</button>
+
+<!-- ════════════════════════════════════════════
+     MAIN CONTENT
+═════════════════════════════════════════════ -->
+<main class="ds-main">
+
+  <!-- ── INTRO ──────────────────────────────── -->
+  <section id="intro" class="ds-section" style="border-top: none; padding-top: 0;">
+    <div class="ds-hero">
+      <div class="ds-hero-eyebrow">Clínica Leão XIII — Grupo Leão XIII</div>
+      <h1 class="ds-hero-title">Design System</h1>
+      <p class="ds-hero-desc">
+        Referência completa de tokens, componentes e padrões visuais do site da Clínica Leão XIII.
+        Construído com Tailwind CSS v4, Next.js 15, Figtree e Noto Sans.
+      </p>
+      <div class="ds-hero-meta">
+        <div class="ds-hero-meta-item">
+          <span class="ds-hero-meta-value">2</span>
+          <span class="ds-hero-meta-label">Fontes</span>
+        </div>
+        <div class="ds-hero-meta-item">
+          <span class="ds-hero-meta-value">12</span>
+          <span class="ds-hero-meta-label">Cores</span>
+        </div>
+        <div class="ds-hero-meta-item">
+          <span class="ds-hero-meta-value">6</span>
+          <span class="ds-hero-meta-label">Variantes de Botão</span>
+        </div>
+        <div class="ds-hero-meta-item">
+          <span class="ds-hero-meta-value">3</span>
+          <span class="ds-hero-meta-label">Animações</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── COLORS ─────────────────────────────── -->
+  <section id="colors" class="ds-section">
+    <div class="ds-section-header">
+      <div class="ds-section-eyebrow">Tokens</div>
+      <h2 class="ds-section-title">Paleta de Cores</h2>
+      <p class="ds-section-desc">Todas as cores definidas via <code class="ds-code">@theme</code> no globals.css. Use sempre as variáveis CSS — nunca valores hardcoded.</p>
+    </div>
+
+    <div class="component-row-label">Cores Principais</div>
+    <div class="token-grid" style="margin-bottom: 2rem;">
+      <div class="token-swatch">
+        <div class="token-swatch-color" style="background: #1B63A3;"></div>
+        <div class="token-swatch-body">
+          <div class="token-swatch-name">Primary</div>
+          <div class="token-swatch-value">#1B63A3</div>
+          <div class="token-swatch-var">--color-primary</div>
+        </div>
+      </div>
+      <div class="token-swatch">
+        <div class="token-swatch-color" style="background: #2472B6;"></div>
+        <div class="token-swatch-body">
+          <div class="token-swatch-name">Secondary</div>
+          <div class="token-swatch-value">#2472B6</div>
+          <div class="token-swatch-var">--color-secondary</div>
+        </div>
+      </div>
+      <div class="token-swatch">
+        <div class="token-swatch-color" style="background: #063E84;"></div>
+        <div class="token-swatch-body">
+          <div class="token-swatch-name">Primary Dark</div>
+          <div class="token-swatch-value">#063E84</div>
+          <div class="token-swatch-var">--color-primary-dark</div>
+        </div>
+      </div>
+      <div class="token-swatch">
+        <div class="token-swatch-color" style="background: #068419;"></div>
+        <div class="token-swatch-body">
+          <div class="token-swatch-name">CTA (Ação)</div>
+          <div class="token-swatch-value">#068419</div>
+          <div class="token-swatch-var">--color-cta</div>
+        </div>
+      </div>
+      <div class="token-swatch">
+        <div class="token-swatch-color" style="background: #C8960C;"></div>
+        <div class="token-swatch-body">
+          <div class="token-swatch-name">Accent</div>
+          <div class="token-swatch-value">#C8960C</div>
+          <div class="token-swatch-var">--color-accent</div>
+        </div>
+      </div>
+      <div class="token-swatch">
+        <div class="token-swatch-color" style="background: #7ab8e8;"></div>
+        <div class="token-swatch-body">
+          <div class="token-swatch-name">Highlight</div>
+          <div class="token-swatch-value">#7ab8e8</div>
+          <div class="token-swatch-var">--color-highlight</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="component-row-label">Neutros &amp; Superfícies</div>
+    <div class="token-grid" style="margin-bottom: 2rem;">
+      <div class="token-swatch">
+        <div class="token-swatch-color" style="background: #0a1628;"></div>
+        <div class="token-swatch-body">
+          <div class="token-swatch-name">Text</div>
+          <div class="token-swatch-value">#0a1628</div>
+          <div class="token-swatch-var">--color-text</div>
+        </div>
+      </div>
+      <div class="token-swatch">
+        <div class="token-swatch-color" style="background: #4a5c70;"></div>
+        <div class="token-swatch-body">
+          <div class="token-swatch-name">Muted</div>
+          <div class="token-swatch-value">#4a5c70</div>
+          <div class="token-swatch-var">--color-muted</div>
+        </div>
+      </div>
+      <div class="token-swatch">
+        <div class="token-swatch-color" style="background: #d0dde8;"></div>
+        <div class="token-swatch-body">
+          <div class="token-swatch-name">Border</div>
+          <div class="token-swatch-value">#d0dde8</div>
+          <div class="token-swatch-var">--color-border</div>
+        </div>
+      </div>
+      <div class="token-swatch">
+        <div class="token-swatch-color" style="background: #f4f8fc; border: 1px solid #d0dde8;"></div>
+        <div class="token-swatch-body">
+          <div class="token-swatch-name">Background</div>
+          <div class="token-swatch-value">#f4f8fc</div>
+          <div class="token-swatch-var">--color-background</div>
+        </div>
+      </div>
+      <div class="token-swatch">
+        <div class="token-swatch-color" style="background: #ffffff; border-bottom: 1px solid #d0dde8;"></div>
+        <div class="token-swatch-body">
+          <div class="token-swatch-name">Surface</div>
+          <div class="token-swatch-value">#ffffff</div>
+          <div class="token-swatch-var">--color-surface</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="component-row-label">Contextuais &amp; Dark</div>
+    <div class="token-grid">
+      <div class="token-swatch">
+        <div class="token-swatch-color" style="background: #013A6E;"></div>
+        <div class="token-swatch-body">
+          <div class="token-swatch-name">Hero BG</div>
+          <div class="token-swatch-value">#013A6E</div>
+          <div class="token-swatch-var">--color-hero-bg</div>
+        </div>
+      </div>
+      <div class="token-swatch">
+        <div class="token-swatch-color" style="background: #0A2540;"></div>
+        <div class="token-swatch-body">
+          <div class="token-swatch-name">Footer BG</div>
+          <div class="token-swatch-value">#0A2540</div>
+          <div class="token-swatch-var">--color-footer-bg</div>
+        </div>
+      </div>
+      <div class="token-swatch">
+        <div class="token-swatch-color" style="background: #ef4444;"></div>
+        <div class="token-swatch-body">
+          <div class="token-swatch-name">Destructive</div>
+          <div class="token-swatch-value">#ef4444</div>
+          <div class="token-swatch-var">--color-destructive</div>
+        </div>
+      </div>
+      <div class="token-swatch">
+        <div class="token-swatch-color" style="background: #f59e0b;"></div>
+        <div class="token-swatch-body">
+          <div class="token-swatch-name">Warning</div>
+          <div class="token-swatch-value">#f59e0b</div>
+          <div class="token-swatch-var">--color-warning</div>
+        </div>
+      </div>
+      <div class="token-swatch">
+        <div class="token-swatch-color" style="background: #25D366;"></div>
+        <div class="token-swatch-body">
+          <div class="token-swatch-name">WhatsApp</div>
+          <div class="token-swatch-value">#25D366</div>
+          <div class="token-swatch-var">--color-whatsapp</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TYPOGRAPHY ─────────────────────────── -->
+  <section id="typography" class="ds-section">
+    <div class="ds-section-header">
+      <div class="ds-section-eyebrow">Tokens</div>
+      <h2 class="ds-section-title">Tipografia</h2>
+      <p class="ds-section-desc">
+        <strong>Figtree</strong> para títulos — personalidade forte, sans-serif geométrico. &nbsp;
+        <strong>Noto Sans</strong> para corpo — legibilidade máxima em todo tamanho.
+      </p>
+    </div>
+
+    <div class="ds-note">
+      Fonte de titulação: <code class="ds-code">font-family: var(--font-heading)</code> &nbsp;|&nbsp;
+      Fonte de texto: <code class="ds-code">font-family: var(--font-body)</code>
+    </div>
+
+    <div class="type-specimen">
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-meta-label">Display</div>
+          <div class="type-meta-detail">Figtree 700<br/>5–8rem<br/>line-height 0.95</div>
+        </div>
+        <span style="font-family: var(--font-heading); font-size: clamp(3rem,5vw,5rem); font-weight: 700; line-height: 0.95; color: var(--color-text);">Saúde que<br/>transforma.</span>
+      </div>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-meta-label">H1</div>
+          <div class="type-meta-detail">Figtree 700<br/>2.5–3.5rem</div>
+        </div>
+        <h1 style="font-size: clamp(2rem,3.5vw,3.5rem);">Clínica Leão XIII</h1>
+      </div>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-meta-label">H2</div>
+          <div class="type-meta-detail">Figtree 700<br/>1.875–2.5rem</div>
+        </div>
+        <h2 style="font-size: clamp(1.5rem,2.5vw,2.5rem);">Nossos Serviços</h2>
+      </div>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-meta-label">H3</div>
+          <div class="type-meta-detail">Figtree 600<br/>1.25–1.5rem</div>
+        </div>
+        <h3 style="font-size: 1.375rem;">Consultas Médicas</h3>
+      </div>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-meta-label">H4</div>
+          <div class="type-meta-detail">Figtree 600<br/>1.125rem</div>
+        </div>
+        <h4 style="font-size: 1.125rem;">Exames Laboratoriais</h4>
+      </div>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-meta-label">Body LG</div>
+          <div class="type-meta-detail">Noto Sans 400<br/>1.0625rem<br/>line-height 1.7</div>
+        </div>
+        <p style="font-size: 1.0625rem; line-height: 1.7; color: var(--color-text); max-width: 55ch;">Atendimento humanizado com tecnologia de ponta. Consultas, exames laboratoriais e de imagem em 4 unidades no Maranhão.</p>
+      </div>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-meta-label">Body</div>
+          <div class="type-meta-detail">Noto Sans 400<br/>0.9375rem<br/>line-height 1.6</div>
+        </div>
+        <p style="font-size: 0.9375rem; color: var(--color-muted); max-width: 55ch;">Cuidando da sua saúde com excelência, tecnologia e humanização. Há mais de 20 anos ao lado de você e sua família.</p>
+      </div>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-meta-label">Small</div>
+          <div class="type-meta-detail">Noto Sans 400<br/>0.875rem</div>
+        </div>
+        <p style="font-size: 0.875rem; color: var(--color-muted);">Aceitamos os principais planos de saúde para facilitar o seu atendimento.</p>
+      </div>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-meta-label">Caption</div>
+          <div class="type-meta-detail">Noto Sans 400<br/>0.75rem</div>
+        </div>
+        <p style="font-size: 0.75rem; color: var(--color-muted);">© 2026 Clínica Leão XIII. Todos os direitos reservados.</p>
+      </div>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-meta-label">Eyebrow</div>
+          <div class="type-meta-detail">Noto Sans 700<br/>0.6875rem<br/>tracking 0.25em<br/>uppercase</div>
+        </div>
+        <p style="font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--color-primary);">Nossos Serviços</p>
+      </div>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-meta-label">Gradient</div>
+          <div class="type-meta-detail">Figtree 700<br/>gradient clip</div>
+        </div>
+        <h2 style="font-size: 2rem;" class="gradient-text">Leão XIII</h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SPACING ────────────────────────────── -->
+  <section id="spacing" class="ds-section">
+    <div class="ds-section-header">
+      <div class="ds-section-eyebrow">Tokens</div>
+      <h2 class="ds-section-title">Espaçamento</h2>
+      <p class="ds-section-desc">Escala de espaçamento baseada em múltiplos de 4px (0.25rem). Usada para paddings, gaps e margins em todo o projeto.</p>
+    </div>
+
+    <div class="spacing-grid">
+      <div class="spacing-row"><div class="spacing-bar" style="width: 4px;"></div><span class="spacing-meta">space-1 · 0.25rem · 4px</span></div>
+      <div class="spacing-row"><div class="spacing-bar" style="width: 8px;"></div><span class="spacing-meta">space-2 · 0.5rem · 8px</span></div>
+      <div class="spacing-row"><div class="spacing-bar" style="width: 12px;"></div><span class="spacing-meta">space-3 · 0.75rem · 12px</span></div>
+      <div class="spacing-row"><div class="spacing-bar" style="width: 16px;"></div><span class="spacing-meta">space-4 · 1rem · 16px</span></div>
+      <div class="spacing-row"><div class="spacing-bar" style="width: 20px;"></div><span class="spacing-meta">space-5 · 1.25rem · 20px</span></div>
+      <div class="spacing-row"><div class="spacing-bar" style="width: 24px;"></div><span class="spacing-meta">space-6 · 1.5rem · 24px</span></div>
+      <div class="spacing-row"><div class="spacing-bar" style="width: 32px;"></div><span class="spacing-meta">space-8 · 2rem · 32px</span></div>
+      <div class="spacing-row"><div class="spacing-bar" style="width: 40px;"></div><span class="spacing-meta">space-10 · 2.5rem · 40px</span></div>
+      <div class="spacing-row"><div class="spacing-bar" style="width: 48px;"></div><span class="spacing-meta">space-12 · 3rem · 48px</span></div>
+      <div class="spacing-row"><div class="spacing-bar" style="width: 64px;"></div><span class="spacing-meta">space-16 · 4rem · 64px</span></div>
+      <div class="spacing-row"><div class="spacing-bar" style="width: 80px;"></div><span class="spacing-meta">space-20 · 5rem · 80px — seções verticais</span></div>
+      <div class="spacing-row"><div class="spacing-bar" style="width: 112px;"></div><span class="spacing-meta">space-28 · 7rem · 112px — seções maiores</span></div>
+    </div>
+  </section>
+
+  <!-- ── RADIUS ─────────────────────────────── -->
+  <section id="radius" class="ds-section">
+    <div class="ds-section-header">
+      <div class="ds-section-eyebrow">Tokens</div>
+      <h2 class="ds-section-title">Border Radius</h2>
+      <p class="ds-section-desc">Escala de arredondamento. O projeto tem um visual suave e moderno — evitar cantos vivos.</p>
+    </div>
+
+    <div class="radius-grid">
+      <div class="radius-box">
+        <div class="radius-demo" style="border-radius: 0.375rem;"></div>
+        <div class="radius-label">sm<br/>0.375rem<br/>6px</div>
+      </div>
+      <div class="radius-box">
+        <div class="radius-demo" style="border-radius: 0.5rem;"></div>
+        <div class="radius-label">md<br/>0.5rem<br/>8px</div>
+      </div>
+      <div class="radius-box">
+        <div class="radius-demo" style="border-radius: 0.75rem;"></div>
+        <div class="radius-label">lg<br/>0.75rem<br/>12px</div>
+      </div>
+      <div class="radius-box">
+        <div class="radius-demo" style="border-radius: 1rem;"></div>
+        <div class="radius-label">xl<br/>1rem<br/>16px</div>
+      </div>
+      <div class="radius-box">
+        <div class="radius-demo" style="border-radius: 1.5rem;"></div>
+        <div class="radius-label">2xl<br/>1.5rem<br/>24px</div>
+      </div>
+      <div class="radius-box">
+        <div class="radius-demo" style="border-radius: 9999px;"></div>
+        <div class="radius-label">full<br/>9999px<br/>pílula</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SHADOWS ────────────────────────────── -->
+  <section id="shadows" class="ds-section">
+    <div class="ds-section-header">
+      <div class="ds-section-eyebrow">Tokens</div>
+      <h2 class="ds-section-title">Sombras</h2>
+      <p class="ds-section-desc">Três níveis de elevação. Sombras sutis para não poluir a identidade limpa do projeto.</p>
+    </div>
+
+    <div class="shadow-grid">
+      <div class="shadow-box">
+        <div class="shadow-demo" style="box-shadow: var(--shadow-card);"></div>
+        <div class="shadow-label">card<br/>nível base</div>
+      </div>
+      <div class="shadow-box">
+        <div class="shadow-demo" style="box-shadow: var(--shadow-elevated);"></div>
+        <div class="shadow-label">elevated<br/>hover / foco</div>
+      </div>
+      <div class="shadow-box">
+        <div class="shadow-demo" style="box-shadow: var(--shadow-floating);"></div>
+        <div class="shadow-label">floating<br/>modais / FAB</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BUTTONS ────────────────────────────── -->
+  <section id="buttons" class="ds-section">
+    <div class="ds-section-header">
+      <div class="ds-section-eyebrow">Componente</div>
+      <h2 class="ds-section-title">Botões</h2>
+      <p class="ds-section-desc">Variantes e tamanhos. Use <strong>primary</strong> para ações secundárias, <strong>cta</strong> (verde) para a ação principal de conversão (agendar consulta).</p>
+    </div>
+
+    <div class="component-row-label">Variantes — tamanho padrão (md)</div>
+    <div class="component-row">
+      <button class="btn btn-md btn-primary">Primary</button>
+      <button class="btn btn-md btn-cta">CTA — Agendar</button>
+      <button class="btn btn-md btn-outline">Outline</button>
+      <button class="btn btn-md btn-ghost">Ghost</button>
+      <button class="btn btn-md btn-link">Link</button>
+      <button class="btn btn-md btn-destructive">Destructive</button>
+    </div>
+
+    <div class="component-row-label">Tamanhos — variante primary</div>
+    <div class="component-row">
+      <button class="btn btn-sm btn-primary">Small</button>
+      <button class="btn btn-md btn-primary">Default</button>
+      <button class="btn btn-lg btn-primary">Large</button>
+      <button class="btn btn-icon btn-primary" aria-label="Ícone">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+
+    <div class="component-row-label">Variante Pill — usada no Hero</div>
+    <div class="component-row" style="background: var(--color-hero-bg);">
+      <button class="btn btn-md btn-cta btn-pill">Agendar Consulta</button>
+      <button class="btn btn-md btn-pill-outline">Ver Resultados</button>
+      <button class="btn btn-icon btn-pill" style="background: rgba(37,211,102,.15); border: 1.5px solid rgba(37,211,102,.3); color: #25D366;" aria-label="WhatsApp">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </button>
+    </div>
+
+    <div class="component-row-label">Estados</div>
+    <div class="component-row">
+      <button class="btn btn-md btn-primary">Normal</button>
+      <button class="btn btn-md btn-primary focus-ring-demo">Focus</button>
+      <button class="btn btn-md btn-primary" disabled>Disabled</button>
+      <button class="btn btn-md btn-primary" style="transform: scale(0.98);">Active</button>
+    </div>
+
+    <div class="component-row-label">WhatsApp Button</div>
+    <div class="component-row">
+      <button class="btn btn-md btn-whatsapp">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Fale pelo WhatsApp
+      </button>
+      <a class="btn btn-md btn-whatsapp btn-pill" href="#">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Agendar pelo WhatsApp
+      </a>
+    </div>
+  </section>
+
+  <!-- ── BADGES ─────────────────────────────── -->
+  <section id="badges" class="ds-section">
+    <div class="ds-section-header">
+      <div class="ds-section-eyebrow">Componente</div>
+      <h2 class="ds-section-title">Badges</h2>
+      <p class="ds-section-desc">Pequenos rótulos inline para categorias, status e especialidades médicas.</p>
+    </div>
+
+    <div class="component-row">
+      <span class="badge badge-default">Convênio</span>
+      <span class="badge badge-success">Disponível</span>
+      <span class="badge badge-warning">Em breve</span>
+      <span class="badge badge-error">Esgotado</span>
+      <span class="badge badge-outline">Especialidade</span>
+      <span class="badge badge-secondary">Novo</span>
+    </div>
+
+    <div class="component-row-label" style="margin-top: 1.5rem;">Uso em contexto</div>
+    <div class="component-row">
+      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <div style="display: flex; align-items: center; gap: 0.625rem;">
+          <span style="font-size: 0.875rem; font-weight: 500;">Cardiologia</span>
+          <span class="badge badge-success">Disponível</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.625rem;">
+          <span style="font-size: 0.875rem; font-weight: 500;">Neurologia</span>
+          <span class="badge badge-warning">Lista de espera</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.625rem;">
+          <span style="font-size: 0.875rem; font-weight: 500;">Resultados de exames</span>
+          <span class="badge badge-default">Online 24h</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CARDS ──────────────────────────────── -->
+  <section id="cards" class="ds-section">
+    <div class="ds-section-header">
+      <div class="ds-section-eyebrow">Componente</div>
+      <h2 class="ds-section-title">Cards</h2>
+      <p class="ds-section-desc">Card padrão, glass card, service card, stat card e testimonial card.</p>
+    </div>
+
+    <div class="component-row-label">Card Padrão</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Consulta Médica</div>
+          <div class="card-desc">Atendimento com médicos especialistas em diversas áreas da saúde.</div>
+        </div>
+        <div class="card-content">
+          <span class="badge badge-success">Disponível</span>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-sm btn-primary">Agendar</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Exames Laboratoriais</div>
+          <div class="card-desc">Resultados online em até 24 horas. Coleta rápida e análise precisa.</div>
+        </div>
+        <div class="card-content">
+          <span class="badge badge-default">Online 24h</span>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-sm btn-outline">Ver Exames</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="component-row-label">Glass Card — usado em seções sobre fundo azul</div>
+    <div style="background: linear-gradient(135deg, #013A6E, #063E84); padding: 2rem; border-radius: 1rem; margin-bottom: 2rem;">
+      <div class="card-glass" style="border-radius: 1rem; padding: 1.5rem; max-width: 320px;">
+        <div style="font-family: var(--font-heading); font-weight: 700; font-size: 1.125rem; color: var(--color-text); margin-bottom: 0.5rem;">Marque pelo WhatsApp</div>
+        <div style="font-size: 0.875rem; color: var(--color-muted); margin-bottom: 1rem; line-height: 1.6;">Atendimento rápido e humanizado em 4 unidades.</div>
+        <button class="btn btn-sm btn-cta btn-pill">Agendar agora</button>
+      </div>
+    </div>
+
+    <div class="component-row-label">Service Card</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+      <div class="service-card">
+        <div class="service-icon" style="background: rgba(27,99,163,.1);">🩺</div>
+        <div>
+          <div style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9375rem; color: var(--color-text);">Consultas Médicas</div>
+          <div style="font-size: 0.8125rem; color: var(--color-muted); margin-top: 3px; line-height: 1.5;">15+ especialidades disponíveis.</div>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon" style="background: #dbeafe;">🧪</div>
+        <div>
+          <div style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9375rem; color: var(--color-text);">Exames Laboratoriais</div>
+          <div style="font-size: 0.8125rem; color: var(--color-muted); margin-top: 3px; line-height: 1.5;">Resultados online em 24h.</div>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon" style="background: #ccfbf1;">🩻</div>
+        <div>
+          <div style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9375rem; color: var(--color-text);">Exames de Imagem</div>
+          <div style="font-size: 0.8125rem; color: var(--color-muted); margin-top: 3px; line-height: 1.5;">Raio-X e ultrassonografia.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="component-row-label">Stat Card — Hero dark</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; background: #013A6E; padding: 1.5rem; border-radius: 1rem; margin-bottom: 2rem;">
+      <div style="display: flex; flex-direction: column;">
+        <span style="font-family: var(--font-heading); font-weight: 700; color: #7ab8e8; font-size: 2.5rem; line-height: 1;">10.000+</span>
+        <span style="font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-top: 6px;">Pacientes Atendidos</span>
+      </div>
+      <div style="display: flex; flex-direction: column;">
+        <span style="font-family: var(--font-heading); font-weight: 700; color: #7ab8e8; font-size: 2.5rem; line-height: 1;">18+</span>
+        <span style="font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-top: 6px;">Especialidades</span>
+      </div>
+      <div style="display: flex; flex-direction: column;">
+        <span style="font-family: var(--font-heading); font-weight: 700; color: #7ab8e8; font-size: 2.5rem; line-height: 1;">4</span>
+        <span style="font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-top: 6px;">Unidades no MA</span>
+      </div>
+      <div style="display: flex; flex-direction: column;">
+        <span style="font-family: var(--font-heading); font-weight: 700; color: #7ab8e8; font-size: 2.5rem; line-height: 1;">20+</span>
+        <span style="font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-top: 6px;">Anos de Experiência</span>
+      </div>
+    </div>
+
+    <div class="component-row-label">Testimonial Card</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p style="font-size: 0.9375rem; color: var(--color-text); margin: 0.75rem 0 1rem; line-height: 1.6;">"Atendimento excelente, médicos muito atenciosos. Recomendo a todos!"</p>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div class="testimonial-avatar">M</div>
+          <div>
+            <div style="font-weight: 600; font-size: 0.875rem;">Maria Silva</div>
+            <div style="font-size: 0.75rem; color: var(--color-muted);">Paciente há 5 anos</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p style="font-size: 0.9375rem; color: var(--color-text); margin: 0.75rem 0 1rem; line-height: 1.6;">"Clínica moderna, resultados dos exames online em menos de 24h."</p>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div class="testimonial-avatar" style="background: linear-gradient(135deg, #068419, #056316);">J</div>
+          <div>
+            <div style="font-weight: 600; font-size: 0.875rem;">João Santos</div>
+            <div style="font-size: 0.75rem; color: var(--color-muted);">Paciente há 2 anos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FORMS ──────────────────────────────── -->
+  <section id="forms" class="ds-section">
+    <div class="ds-section-header">
+      <div class="ds-section-eyebrow">Componente</div>
+      <h2 class="ds-section-title">Formulários</h2>
+      <p class="ds-section-desc">Inputs, selects, textareas e labels. Altura padrão: 44px (2.75rem). Foco com ring azul.</p>
+    </div>
+
+    <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-2xl); padding: 2rem; max-width: 560px; box-shadow: var(--shadow-elevated);">
+      <h3 style="font-size: 1.25rem; margin-bottom: 1.5rem;">Agendar Consulta</h3>
+
+      <div style="display: flex; flex-direction: column; gap: 1.125rem;">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Nome completo</label>
+            <input class="input" type="text" placeholder="João Silva" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Telefone</label>
+            <input class="input" type="tel" placeholder="(99) 9 0000-0000" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">E-mail</label>
+          <input class="input" type="email" placeholder="joao@exemplo.com" />
+          <span class="helper-text">Enviaremos a confirmação para este e-mail.</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Especialidade</label>
+          <select class="input">
+            <option value="">Selecione uma especialidade</option>
+            <option>Cardiologia</option>
+            <option>Pediatria</option>
+            <option>Clínica Geral</option>
+            <option>Ortopedia</option>
+            <option>Ginecologia</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Campo com erro</label>
+          <input class="input error" type="text" value="valor inválido" />
+          <span class="error-text">Por favor, informe um valor válido.</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Campo desabilitado</label>
+          <input class="input" type="text" placeholder="Não editável" disabled />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Mensagem / Observações</label>
+          <textarea class="input" placeholder="Descreva sua queixa principal ou informações adicionais..."></textarea>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; margin-top: 0.5rem;">
+          <button class="btn btn-md btn-cta" style="flex: 1;">Confirmar Agendamento</button>
+          <button class="btn btn-md btn-ghost">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── NAVIGATION ─────────────────────────── -->
+  <section id="navigation" class="ds-section">
+    <div class="ds-section-header">
+      <div class="ds-section-eyebrow">Padrão</div>
+      <h2 class="ds-section-title">Navegação</h2>
+      <p class="ds-section-desc">Header fixo com fundo transparente no topo, tornando-se branco com blur ao rolar. Mobile tem menu overlay.</p>
+    </div>
+
+    <div class="component-row-label">Estado inicial — topo da página (fundo transparente)</div>
+    <div class="nav-preview" style="margin-bottom: 1rem;">
+      <div class="nav-logo-mark">
+        <div class="nav-logo-circle">L</div>
+        <div>
+          <div class="nav-logo-text">Clínica Leão XIII</div>
+          <div style="font-size: 0.65rem; color: rgba(255,255,255,.4);">Grupo Leão XIII</div>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <span class="nav-link-item active">Início</span>
+        <span class="nav-link-item">Nossa Clínica ▾</span>
+        <span class="nav-link-item">Convênios</span>
+        <span class="nav-link-item">Consultas</span>
+        <span class="nav-link-item">Exames</span>
+        <span class="nav-link-item">Contato</span>
+      </nav>
+      <div class="nav-actions">
+        <span style="display:flex;align-items:center;gap:0.5rem;padding:0.5rem 1rem;border-radius:0.5rem;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);font-size:0.875rem;font-weight:600;cursor:pointer;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Ver Resultados
+        </span>
+        <button class="btn btn-sm btn-cta btn-pill">Agendar Consulta</button>
+      </div>
+    </div>
+
+    <div class="component-row-label">Estado scrolled — com fundo branco + blur</div>
+    <div style="background: rgba(255,255,255,.96); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: 0 1.5rem; height: 5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; box-shadow: 0 1px 0 rgba(0,0,0,.08), 0 2px 12px rgba(0,0,0,.06);">
+      <div style="display:flex;align-items:center;gap:0.75rem;">
+        <div style="width:40px;height:40px;border-radius:0.75rem;background:var(--color-primary);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-weight:900;color:#fff;font-size:0.875rem;">L</div>
+        <div>
+          <div style="font-family:var(--font-heading);font-weight:700;color:var(--color-text);font-size:0.9375rem;">Clínica Leão XIII</div>
+          <div style="font-size:0.65rem;color:var(--color-muted);">Grupo Leão XIII</div>
+        </div>
+      </div>
+      <nav style="display:flex;align-items:center;gap:0.25rem;">
+        <span style="padding:0.5rem 0.75rem;border-radius:0.5rem;font-size:0.875rem;font-weight:500;color:var(--color-primary);cursor:pointer;">Início</span>
+        <span style="padding:0.5rem 0.75rem;border-radius:0.5rem;font-size:0.875rem;font-weight:500;color:var(--color-text);cursor:pointer;">Nossa Clínica ▾</span>
+        <span style="padding:0.5rem 0.75rem;border-radius:0.5rem;font-size:0.875rem;font-weight:500;color:var(--color-text);cursor:pointer;">Convênios</span>
+        <span style="padding:0.5rem 0.75rem;border-radius:0.5rem;font-size:0.875rem;font-weight:500;color:var(--color-text);cursor:pointer;">Exames</span>
+      </nav>
+      <div style="display:flex;align-items:center;gap:0.625rem;">
+        <span style="display:flex;align-items:center;gap:0.5rem;padding:0.5rem 1rem;border-radius:0.5rem;background:rgba(27,99,163,.1);color:var(--color-primary);font-size:0.875rem;font-weight:600;cursor:pointer;">Ver Resultados</span>
+        <button class="btn btn-sm btn-cta">Agendar Consulta</button>
+      </div>
+    </div>
+
+    <div class="component-row-label" style="margin-top: 1.5rem;">Dropdown — Nossa Clínica</div>
+    <div style="position: relative; display: inline-block; margin-bottom: 1rem;">
+      <span style="display:flex;align-items:center;gap:0.25rem;padding:0.5rem 0.75rem;border-radius:0.5rem;font-size:0.875rem;font-weight:500;color:var(--color-text);background:rgba(27,99,163,.05);cursor:pointer;">Nossa Clínica ▾</span>
+      <div style="position:absolute;top:calc(100% + 8px);left:0;background:#fff;border-radius:0.75rem;box-shadow:var(--shadow-elevated);border:1px solid var(--color-border);padding:0.5rem;min-width:200px;z-index:10;">
+        <a style="display:block;padding:0.625rem 1rem;border-radius:0.5rem;font-size:0.875rem;font-weight:500;color:var(--color-primary);background:rgba(27,99,163,.05);">Sobre a Clínica</a>
+        <a style="display:block;padding:0.625rem 1rem;border-radius:0.5rem;font-size:0.875rem;font-weight:500;color:var(--color-text);">Trabalhe Conosco</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HERO ───────────────────────────────── -->
+  <section id="hero" class="ds-section">
+    <div class="ds-section-header">
+      <div class="ds-section-eyebrow">Padrão</div>
+      <h2 class="ds-section-title">Hero Section</h2>
+      <p class="ds-section-desc">Seção principal com vídeo de fundo, gradiente overlay, título em reveal por linha e estatísticas editoriais.</p>
+    </div>
+
+    <div class="hero-preview">
+      <p class="hero-eyebrow">Pedreiras · Igarapé Grande · Poção de Pedra · Joselândia</p>
+      <h1 class="hero-h1">
+        Saúde que<br>
+        transforma<br>
+        vidas<span class="accent">.</span>
+      </h1>
+      <p class="hero-desc">
+        Atendimento humanizado com tecnologia de ponta. Consultas, exames laboratoriais e de imagem em 4 unidades no Maranhão.
+      </p>
+      <div class="hero-ctas">
+        <button class="btn btn-md btn-cta btn-pill">Agendar Consulta</button>
+        <button class="btn btn-md btn-pill-outline">Ver Resultados</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────── -->
+  <section id="footer" class="ds-section">
+    <div class="ds-section-header">
+      <div class="ds-section-eyebrow">Padrão</div>
+      <h2 class="ds-section-title">Rodapé</h2>
+      <p class="ds-section-desc">Grid de 4 colunas com marca, links rápidos, serviços e unidades. Fundo <code class="ds-code">#0A2540</code>.</p>
+    </div>
+
+    <div class="footer-preview">
+      <div class="footer-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;">
+            <div style="width:36px;height:36px;background:var(--color-primary);border-radius:0.5rem;display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-weight:900;color:#fff;font-size:0.9rem;">L</div>
+            <div>
+              <div style="font-family:var(--font-heading);font-weight:700;color:#fff;font-size:0.9375rem;">Clínica Leão XIII</div>
+            </div>
+          </div>
+          <p style="font-size:0.8125rem;color:rgba(255,255,255,.55);line-height:1.7;max-width:26ch;">Cuidando da sua saúde com excelência, tecnologia e humanização. Há mais de 20 anos ao lado de você e sua família.</p>
+          <div class="footer-social">
+            <div class="social-btn">📷</div>
+            <div class="social-btn">📘</div>
+            <div class="social-btn" style="color:rgba(37,211,102,.7)">💬</div>
+          </div>
+        </div>
+        <div>
+          <div class="footer-col-title">Links Rápidos</div>
+          <a class="footer-link-item">Início</a>
+          <a class="footer-link-item">Sobre a Clínica</a>
+          <a class="footer-link-item">Trabalhe Conosco</a>
+          <a class="footer-link-item">Convênios</a>
+          <a class="footer-link-item">Contato</a>
+        </div>
+        <div>
+          <div class="footer-col-title">Nossas Unidades</div>
+          <div style="display:flex;flex-direction:column;gap:0.75rem;">
+            <div>
+              <div style="font-size:0.8125rem;font-weight:600;color:#fff;">Pedreiras</div>
+              <div style="font-size:0.75rem;color:rgba(255,255,255,.5);">Av. Rio Branco, 838A – Centro</div>
+              <div style="font-size:0.75rem;color:#93c5fd;">(99) 3642-7578</div>
+            </div>
+            <div>
+              <div style="font-size:0.8125rem;font-weight:600;color:#fff;">Igarapé Grande</div>
+              <div style="font-size:0.75rem;color:rgba(255,255,255,.5);">Av. João Carvalho, 67 – Centro</div>
+              <div style="font-size:0.75rem;color:#93c5fd;">(99) 3642-7578</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="border-top: 1px solid rgba(255,255,255,.1); margin-top: 2rem; padding-top: 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+        <p style="font-size: 0.75rem; color: rgba(255,255,255,.4);">© 2026 Clínica Leão XIII. Todos os direitos reservados.</p>
+        <p style="font-size: 0.75rem; color: rgba(255,255,255,.3);">CNPJ: 00.000.000/0001-00</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ANIMATIONS ─────────────────────────── -->
+  <section id="animations" class="ds-section">
+    <div class="ds-section-header">
+      <div class="ds-section-eyebrow">Padrão</div>
+      <h2 class="ds-section-title">Animações</h2>
+      <p class="ds-section-desc">Passe o mouse sobre cada card para ver a animação. Todas respeitam <code class="ds-code">prefers-reduced-motion</code>.</p>
+    </div>
+
+    <div class="anim-grid">
+      <div class="anim-item" title="Hover para animar">
+        <div class="anim-demo anim-fadeInUp">↑</div>
+        <div class="anim-label">fadeInUp<br/>0.5s ease-out</div>
+      </div>
+      <div class="anim-item" title="Hover para animar">
+        <div class="anim-demo anim-slideRight">→</div>
+        <div class="anim-label">slideInRight<br/>0.4s ease-out</div>
+      </div>
+      <div class="anim-item" title="Hover para animar">
+        <div class="anim-demo anim-pulseSlow">◉</div>
+        <div class="anim-label">pulseSlow<br/>3s infinite</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="component-row-label">Curvas de Easing usadas no projeto</div>
+    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <code class="ds-code">[0.22, 1, 0.36, 1]</code>
+        <span style="font-size: 0.875rem; color: var(--color-muted);">Entradas principais — suave, overshoots levemente</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <code class="ds-code">[0.16, 1, 0.3, 1]</code>
+        <span style="font-size: 0.875rem; color: var(--color-muted);">Header e transições de layout</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <code class="ds-code">ease-out</code>
+        <span style="font-size: 0.875rem; color: var(--color-muted);">Dropdowns e elementos secundários</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <code class="ds-code">spring(400, 30)</code>
+        <span style="font-size: 0.875rem; color: var(--color-muted);">Active nav indicator (Framer Motion)</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="component-row-label">Aurora Blobs — fundo das seções Services e Gallery</div>
+    <div style="position: relative; height: 200px; background: var(--color-background); border-radius: var(--radius-xl); overflow: hidden; border: 1px solid var(--color-border);">
+      <div style="position:absolute;width:300px;height:300px;top:-30%;left:-10%;background:radial-gradient(circle,rgba(36,114,182,.3) 0%,transparent 65%);filter:blur(40px);border-radius:9999px;animation:aurora1 8s ease-in-out infinite;"></div>
+      <div style="position:absolute;width:250px;height:250px;bottom:-20%;right:-5%;background:radial-gradient(circle,rgba(6,62,132,.4) 0%,transparent 65%);filter:blur(50px);border-radius:9999px;animation:aurora1 12s ease-in-out infinite 3s;"></div>
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+        <span style="font-size:0.8125rem;color:var(--color-muted);font-weight:500;">aurora blobs CSS-only</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── UTILITIES ──────────────────────────── -->
+  <section id="utilities" class="ds-section">
+    <div class="ds-section-header">
+      <div class="ds-section-eyebrow">Padrão</div>
+      <h2 class="ds-section-title">Classes Utilitárias</h2>
+      <p class="ds-section-desc">Classes auxiliares definidas no <code class="ds-code">@layer utilities</code> do globals.css.</p>
+    </div>
+
+    <div class="component-row-label">Gradient Text</div>
+    <div class="component-row">
+      <h2 class="gradient-text" style="font-size: 2.5rem; font-family: var(--font-heading); font-weight: 700;">Leão XIII</h2>
+    </div>
+
+    <div class="component-row-label">Glass Card</div>
+    <div style="background: linear-gradient(135deg, var(--color-primary), var(--color-secondary)); padding: 2rem; border-radius: 1rem;">
+      <div class="glass-card" style="border-radius: 1rem; padding: 1.5rem; max-width: 320px;">
+        <p style="font-weight: 600; margin-bottom: 0.375rem;">Glass Card</p>
+        <p style="font-size: 0.875rem; color: var(--color-muted);">background: rgba(255,255,255,0.8) + backdrop-filter: blur(12px)</p>
+      </div>
+    </div>
+
+    <div class="component-row-label" style="margin-top: 1.5rem;">Focus Ring</div>
+    <div class="component-row">
+      <button class="btn btn-md btn-outline focus-ring-demo" tabindex="0">Foco visível (Tab aqui)</button>
+      <span style="font-size: 0.8125rem; color: var(--color-muted);">outline: 2px solid var(--color-primary); outline-offset: 2px</span>
+    </div>
+
+    <div class="component-row-label" style="margin-top: 1.5rem;">Container</div>
+    <div style="background: var(--color-surface); border: 2px dashed var(--color-border); border-radius: var(--radius-xl); padding: 1rem; text-align: center;">
+      <code class="ds-code">.container-clinic</code>
+      <p style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--color-muted);">max-width: 80rem (1280px) · padding: 1rem → 1.5rem → 2rem conforme breakpoint</p>
+    </div>
+
+    <div class="component-row-label" style="margin-top: 1.5rem;">Grain Texture</div>
+    <div style="position: relative; height: 100px; background: var(--color-primary); border-radius: var(--radius-xl); overflow: hidden;" class="grain">
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.7);font-size:0.875rem;">grain texture overlay via ::after</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="component-row-label">Scrollbar customizada</div>
+    <div style="height: 120px; overflow-y: scroll; background: var(--color-surface); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: 1rem;">
+      <p style="font-size: 0.875rem; color: var(--color-muted);">Scrollbar fina (6px) com cor primária. Role para ver...</p>
+      <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--color-muted);">Linha 2</p>
+      <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--color-muted);">Linha 3</p>
+      <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--color-muted);">Linha 4</p>
+      <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--color-muted);">Linha 5</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ════════════════════════════════════════════
+     SCRIPTS
+═════════════════════════════════════════════ -->
+<script>
+  // Sidebar mobile toggle
+  const toggle = document.getElementById('sidebarToggle')
+  const sidebar = document.getElementById('sidebar')
+  toggle.addEventListener('click', () => {
+    sidebar.classList.toggle('open')
+    toggle.textContent = sidebar.classList.contains('open') ? '✕' : '☰'
+  })
+
+  // Active sidebar link on scroll
+  const sections = document.querySelectorAll('.ds-section[id]')
+  const navLinks = document.querySelectorAll('.ds-nav-link')
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          navLinks.forEach((link) => {
+            link.classList.toggle(
+              'active',
+              link.getAttribute('href') === '#' + entry.target.id
+            )
+          })
+        }
+      })
+    },
+    { rootMargin: '-30% 0px -60% 0px' }
+  )
+
+  sections.forEach((s) => observer.observe(s))
+
+  // Close sidebar when clicking a link on mobile
+  navLinks.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault()
+      const target = document.querySelector(link.getAttribute('href'))
+      if (target) target.scrollIntoView({ behavior: 'smooth' })
+      if (window.innerWidth <= 900) {
+        sidebar.classList.remove('open')
+        toggle.textContent = '☰'
+      }
+    })
+  })
+</script>
+
+</body>
+</html>

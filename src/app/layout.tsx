@@ -9,14 +9,14 @@ import { CustomCursor, CookieBanner } from '@/components/layout/ClientOnly'
 
 const figtree = Figtree({
   subsets: ['latin'],
-  weight: ['400', '600', '700'],
+  weight: ['400', '500', '600', '700', '800', '900'],
   variable: '--font-heading',
   display: 'swap',
 })
 
 const notoSans = Noto_Sans({
   subsets: ['latin'],
-  weight: ['400', '600', '700'],
+  weight: ['400', '500', '600', '700'],
   variable: '--font-body',
   display: 'swap',
 })
@@ -160,7 +160,13 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://biodataweb.net" />
         <link rel="dns-prefetch" href="https://wa.me" />
       </head>
-      <body className="min-h-screen flex flex-col bg-[#f0f7ff] text-[#0a1628] font-body antialiased" suppressHydrationWarning>
+      <body className="min-h-screen flex flex-col bg-background text-text font-body antialiased" suppressHydrationWarning>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[99999] focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg focus:font-medium focus:text-sm focus:shadow-floating"
+        >
+          Ir para o conteúdo principal
+        </a>
         <CustomCursor />
         <CookieBanner />
         <div id="theme-root" className="flex flex-col min-h-screen">

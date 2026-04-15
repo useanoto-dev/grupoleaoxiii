@@ -117,7 +117,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={cn(
-                  'flex h-10 w-10 items-center justify-center rounded-lg',
+                  'flex h-11 w-11 items-center justify-center rounded-lg',
                   'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white',
                   'transition-all duration-200',
                   'focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40',
@@ -132,7 +132,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={cn(
-                  'flex h-10 w-10 items-center justify-center rounded-lg',
+                  'flex h-11 w-11 items-center justify-center rounded-lg',
                   'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white',
                   'transition-all duration-200',
                   'focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40',
@@ -149,7 +149,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={cn(
-                  'flex h-10 w-10 items-center justify-center rounded-lg',
+                  'flex h-11 w-11 items-center justify-center rounded-lg',
                   'bg-white/10 text-white/70 hover:bg-[#25D366]/30 hover:text-[#25D366]',
                   'transition-all duration-200',
                   'focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40',
@@ -241,7 +241,7 @@ export function Footer() {
                   <a
                     href={`tel:${unit.phone.replace(/\D/g, '')}`}
                     className={cn(
-                      'text-xs text-blue-300 hover:text-white font-medium font-body',
+                      'text-xs text-[#7ab8e8] hover:text-white font-medium font-body',
                       'transition-colors duration-200 w-fit',
                       'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 rounded'
                     )}

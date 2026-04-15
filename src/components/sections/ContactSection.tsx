@@ -263,6 +263,7 @@ export function ContactSection() {
           ))}
         </div>
       </div>
+      <div className="pb-16 md:pb-24" />
     </section>
   )
 }

@@ -132,7 +132,7 @@ export function CookieBanner() {
                 type="button"
                 onClick={() => save('declined')}
                 className={cn(
-                  'flex-1 h-9 rounded-xl border border-border',
+                  'flex-1 h-11 rounded-xl border border-border',
                   'font-body text-xs font-semibold text-muted',
                   'hover:bg-border/40 hover:text-text transition-colors duration-200',
                   'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40'
@@ -144,7 +144,7 @@ export function CookieBanner() {
                 type="button"
                 onClick={() => save('accepted')}
                 className={cn(
-                  'flex-1 h-9 rounded-xl',
+                  'flex-1 h-11 rounded-xl',
                   'bg-primary text-white font-body text-xs font-semibold',
                   'hover:bg-[#155291] transition-colors duration-200',
                   'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50'

@@ -67,6 +67,10 @@
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Offset para o header fixo ao navegar por âncoras */
+    scroll-padding-top: 5rem;
+    /* Previne pull-to-refresh acidental no mobile */
+    overscroll-behavior-y: none;
   }
 
   body {
@@ -107,6 +111,18 @@
 
   button {
     cursor: pointer;
+  }
+
+  /* Remove tap delay de 300ms no iOS Safari */
+  a,
+  button,
+  [role="button"],
+  input,
+  label,
+  select,
+  textarea,
+  summary {
+    touch-action: manipulation;
   }
 
   /* Cursor azul — só em dispositivos com mouse */
